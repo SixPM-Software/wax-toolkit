@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Whitelists</title>
+        <title>Whitelist Generator - WAX Toolkit</title>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.0/brython.min.js">
         </script>
@@ -33,17 +33,22 @@
                 <img class="d-block mx-auto mb-4" src="img/gold stamp.png" alt="" width="72" height="72">
                 <h1 class="display-5 fw-bold text-white">Whitelists (Beta)</h1>
                 <div class="col-lg-6 mx-auto">
-                    <p class="fs-5 mb-4">Whitelist generation tool.</p>
-                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <p class="fs-5 mb-4">a nifty whitelist generation tool</p>
+                    <!-- <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                         <a href="#data-form"><button type="button" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Generate a whitelist!</button></a>
-                        <a href="#see-how-it-works"><button type="button" class="btn btn-outline-secondary btn-lg px-4">See how it works</button></a>
-                    </div>
+                        <a href="#see-how-it-works"><button type="button" class="btn btn-outline-secondary btn-lg px-4">This</button></a>
+                    </div> -->
                 </div>
             </div>
         </div>
 
-        <div class="px-2 py-5 my-4">
-            <h1>Whitelist Generator</h2>
+        <div class="px-2 py-5 my-4 container">
+            <h1>Whitelist Generator</h1>
+            <p>Click the buttons below to add requirements, and then hit the Generate Whitelist button to start!
+            <br>
+            Whitelist generation may take a while for large groups of accounts (don't try generating a whitelist of everyone with R=Planet and Alien Worlds NFTs).
+            <br>
+            I've done my best to check that this tool is accurage, but if you notice anything wrong with the whitelists, please contact me on <a href="https://discord.gg/sixpm">Discord</a>.</p>
             <button class="btn btn-primary" id="add-field">Add Requirement</button>
             <!-- <button class="btn btn-dark" id="add-blacklist">Add Blacklist</button> -->
             <button class="btn btn-success" id="generate-whitelist-btn">Generate Whitelist</button>
@@ -71,6 +76,49 @@
                 </div>
             </div>
         </div>
+        <div class="container py-5" id="featured-3">
+            <h2 class="pb-2 border-bottom" id="see-how-it-works">How does it work?</h2>
+            <p>Explanation coming soon!</p>
+            <!-- <div class="row g-5 py-5">
+              <div class="feature col-md-4">
+                  <img src="img/wax.png" class="img-fluid"/>
+                  <p></p>
+                  <h2>WAX</h2>
+                  <p>First, we query the WAX API with your address and date range, looking at 100 transactions at a time. This may take a while, especially if you carry out many transactions.</p>
+              </div>
+              <div class="feature col-md-4">
+                <img src="img/coingecko.png" class="img-fluid" style="zoom: 2"/>
+                  <p></p>
+                <h2>CoinGecko</h2>
+                <p>Next, we get historical data from CoinGecko to calculate the value of transactions on the day they were carried out. At the moment, value is calculated in USD, with plans to support more currencies soon.</p>
+              </div>
+              <div class="feature col-md-4">
+                <img src="img/excel.png" class="img-fluid"/>
+                  <p></p>
+                <h2>Spreadsheet</h2>
+                <p>Finally, we process all the data into a format that can be easily copied into your favourite spreadsheet editor. Just paste it in and go!</p>
+              </div>
+            </div> -->
+
+              <hr>
+              <div class="row  g-5 py-5">
+                <div class="col-md-5 align-text-top">
+                    <h2>Upcoming features</h2>
+                    <ul>
+                        <li>Blacklisting based on wallet address and NFTs held</li>
+                    </ul>
+                </div>
+                <div class="col-md-5 align-text-top">
+                    <h2>Acknowledgements</h2>
+                    <p>Thanks to:</p>
+                    <ul>
+                        <li>The WAX.io team</li>
+                        <li>AtomicHub</li>
+                        <li>Everyone who has supported myself, SixPM Software, and our project</li>
+                    </ul>
+                </div>
+                </div>
+          </div>
 
         <footer class="footer mt-auto py-3 bg-light">
             <div class="container">
