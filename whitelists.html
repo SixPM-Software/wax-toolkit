@@ -218,7 +218,13 @@
                     whitelist = set.intersection(*whitelist)
                 document["sneaky-text"].text = str(len(whitelist)) + " accounts match the criteria!"
                 document["output"].value = "\n".join(whitelist)
-                    
+            
+            def copy_func(e):
+                document['output'].focus()
+                document['output'].select()
+                document.execCommand("copy")
+
+            document['copy-btn'].bind('click',copy_func)
 
             document['add-field'].bind('click',add_field)
             document['generate-whitelist-btn'].bind('click',lambda e:aio.run(gen_whitelist(e)))
