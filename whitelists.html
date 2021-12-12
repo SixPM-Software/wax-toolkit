@@ -44,14 +44,15 @@
 
         <div class="px-2 py-5 my-4 container">
             <h1>Whitelist Generator</h1>
-            <p>Click the buttons below to add requirements, and then hit the Generate Whitelist button to start!
+            <p>Click the buttons below to add requirements, and then hit Generate Whitelist for your platform of choice to start!
             <br>
             Whitelist generation may take a while, especially for large groups of accounts (don't try generating a whitelist of everyone with R-Planet and Alien Worlds NFTs).
             <br>
             I've done my best to check that this tool is accurate, but if you notice anything wrong with the whitelists, please contact me on <a href="https://discord.gg/sixpm">Discord</a>.</p>
             <button class="btn btn-primary" id="add-field">Add Requirement</button>
             <!-- <button class="btn btn-dark" id="add-blacklist">Add Blacklist</button> -->
-            <button class="btn btn-success" id="generate-whitelist-btn">Generate Whitelist</button>
+            <button class="btn btn-success" id="generate-nb-btn">Generate NeftyBlocks Whitelist</button>
+            <button class="btn btn-success" id="generate-ah-btn">Generate AtomicHub Whitelist</button>
             <div class="container py-5">
                 <form id="whitelist-form">
                     <div class="input-group">
@@ -79,26 +80,7 @@
         <div class="container py-5" id="featured-3">
             <h2 class="pb-2 border-bottom" id="see-how-it-works">How does it work?</h2>
             <p>Explanation coming when I get some breathing space! For now, just assume it's witchcraft.</p>
-            <!-- <div class="row g-5 py-5">
-              <div class="feature col-md-4">
-                  <img src="img/wax.png" class="img-fluid"/>
-                  <p></p>
-                  <h2>WAX</h2>
-                  <p>First, we query the WAX API with your address and date range, looking at 100 transactions at a time. This may take a while, especially if you carry out many transactions.</p>
-              </div>
-              <div class="feature col-md-4">
-                <img src="img/coingecko.png" class="img-fluid" style="zoom: 2"/>
-                  <p></p>
-                <h2>CoinGecko</h2>
-                <p>Next, we get historical data from CoinGecko to calculate the value of transactions on the day they were carried out. At the moment, value is calculated in USD, with plans to support more currencies soon.</p>
-              </div>
-              <div class="feature col-md-4">
-                <img src="img/excel.png" class="img-fluid"/>
-                  <p></p>
-                <h2>Spreadsheet</h2>
-                <p>Finally, we process all the data into a format that can be easily copied into your favourite spreadsheet editor. Just paste it in and go!</p>
-              </div>
-            </div> -->
+
 
               <hr>
               <div class="row  g-5 py-5">
@@ -168,7 +150,7 @@
             def delete_element(e):
                 del document[e.target.parent.id]
             
-            async def gen_whitelist(e):
+            async def gen_whitelist(e,platform):
                 checks = []
                 for i in range(field_count):
                     try:
@@ -217,7 +199,10 @@
                 if operator == "all":
                     whitelist = set.intersection(*whitelist)
                 document["sneaky-text"].text = str(len(whitelist)) + " accounts match the criteria!"
-                document["output"].value = "\n".join(whitelist)
+                if platform == "nb":
+                    document["output"].value = "\n".join(whitelist)
+                else:
+                    document["output"].value = str(whitelist)
             
             def copy_func(e):
                 document['output'].focus()
@@ -227,7 +212,8 @@
             document['copy-btn'].bind('click',copy_func)
 
             document['add-field'].bind('click',add_field)
-            document['generate-whitelist-btn'].bind('click',lambda e:aio.run(gen_whitelist(e)))
+            document['generate-nb-btn'].bind('click',lambda e:aio.run(gen_whitelist(e,"nb")))
+            document['generate-ah-btn'].bind('click',lambda e:aio.run(gen_whitelist(e,"ah")))
 
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
