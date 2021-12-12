@@ -202,7 +202,7 @@
                 if platform == "nb":
                     document["output"].value = "\n".join(whitelist)
                 else:
-                    document["output"].value = str(whitelist)
+                    document["output"].value = str(list(whitelist))
             
             def copy_func(e):
                 document['output'].focus()
