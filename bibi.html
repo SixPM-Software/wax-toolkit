@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bibi check - WAX Toolkit</title>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.0/brython.min.js">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.0/brython_stdlib.min.js">
+        </script>
+
+        <link rel="icon" href="img/favicon-32x32.png">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        <style>
+            .b-example-divider {
+                height: 3rem;
+                background-color: rgba(0, 0, 0, .1);
+                border: solid rgba(0, 0, 0, .15);
+                border-width: 1px 0;
+                box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+            }
+            
+
+        </style>
+    </head>
+    <body onload="brython()">
+
+        <div class="bg-dark text-secondary px-4 py-5 text-center">
+            <div class="py-5">
+                <a href="./index.html"><img class="d-block mx-auto mb-4" src="img/gold stamp.png" alt="" width="72" height="72"></a>
+                <h1 class="display-5 fw-bold text-white">Bibi Check</h1>
+                <div class="col-lg-6 mx-auto">
+                    <p class="fs-5 mb-4">a checking tool</p>
+                    <!-- <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        <a href="#data-form"><button type="button" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Generate a whitelist!</button></a>
+                        <a href="#see-how-it-works"><button type="button" class="btn btn-outline-secondary btn-lg px-4">This</button></a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="px-2 py-5 my-4 container">
+            <h1>BibiBibiBibi</h1>
+            <p>You have to press the go button for this to work.</p>
+            <form id="whitelist-form">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">My wallet address is</span>
+                    </div>
+                    <input id="text" class="form-control">
+
+                    <button class="btn btn-outline-secondary" id="copy-btn" type="button">Go!</button>
+                </div>
+                <div id="output-space"></div>
+            </form>
+
+        <footer class="footer mt-auto py-3 bg-light">
+            <div class="container">
+              <span class="text-muted">Built in Python with ❤️ by stuckatsixpm</span>
+            </div>
+        </footer>
+
+        
+        <script type="text/python" id="whitelistgen">
+            import base64
+            import calendar
+            import csv
+            import datetime
+            import json
+            import time
+            from operator import itemgetter
+
+            from browser import document, ajax, html, aio, bind
+            API_URL = "https://aa.neftyblocks.com/atomicassets/v1"
+
+            templates = [
+            377444,
+            376091,
+            377625,
+            379135,
+            376033,
+            376031,
+            389371,
+            389325,
+            390071,
+            391845,
+            392352,
+            387882,
+            391650,
+            395241,
+            395898,
+            393344,
+            396142,
+            396199,
+            398931,
+            388766,
+            399680,
+            393634,
+            ]
+
+            async def find_user(e):
+                wallet = document["text"].value
+                for index,item in enumerate(templates):
+                    await aio.sleep(0)
+                    req = ajax.ajax()
+                    url = f'{API_URL}/assets?template_id={item}&owner={wallet}'
+                    req.open('GET', url, False)
+                    req.send()
+                    data = json.loads(req.responseText)["data"]
+                    if len(data):
+                        document["output-space"] <= html.P(f"Day {index+1}: Template {item} - You have this!")
+                    else:
+                        document["output-space"] <= html.HTML(f"""<p>Day {index+1}: Template {item} - Missing! <a href="https://wax.atomichub.io/market?order=asc&sort=price&template_id={item}">Atomichub</a>/<a href="https://neftyblocks.com/marketplace?sort=price&order=asc&template_id={item}">NeftyBlocks</a></p>""")
+                print(123)
+
+            @bind("#copy-btn","click")
+            def searchgo(e):
+                aio.run(find_user(e))
+            
+
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+    </body>
+</html> 
