@@ -6,7 +6,33 @@
     <title>Shnazzy's E-Girls Checker</title>
 
     <link rel="icon" href="img/favicon-32x32.png" />
+    <script src="https://cdn.jsdelivr.net/npm/brython@3/brython.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3/brython_stdlib.js"></script>
 
+    <script
+      src="https://cdn.bokeh.org/bokeh/release/bokeh-2.4.2.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.4.2.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.4.2.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.bokeh.org/bokeh/release/bokeh-api-2.4.2.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.bokeh.org/bokeh/release/bokeh-gl-2.4.2.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-2.4.2.min.js"
+      crossorigin="anonymous"
+    ></script>
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
@@ -45,13 +71,16 @@
         background-color: #000000;
         color: aliceblue;
       }
+      table, td, th, tr {
+        color: aliceblue;
+      }
       body {
         background-color: #422142;
         color: aliceblue;
       }
     </style>
   </head>
-  <body>
+  <body onload="brython()">
     <div
       class="bg-dark text-secondary px-4 py-5 text-center"
       style="background-image: url(img/1500x500.jpg)"
@@ -84,7 +113,7 @@
       </div>
     </div>
 
-    <div class="px-2 py-5 my-1 container">
+    <div class="px-2 pt-5 my-1 container">
       <div class="card">
         <div class="card-body">
           <img
@@ -115,8 +144,29 @@
             <a href="https://neftyblocks.com">NeftyBlocks marketplace</a>
             via a special link that'll only show you what you're searching for!
           </p>
-
-          <p class="card-text">Also, Body Base filtering is currently broken, but we'll have it online as soon as we can!</p>
+          <p class="card-text">
+            Also, Body Base filtering is currently broken, but we'll have it
+            online as soon as we can!
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="px-2 py-1 my-4 container">
+      <div class="card">
+        <div class="card-body">
+          <img
+            src="img/egirl8413.png"
+            class="float-start me-4"
+            width="10%"
+            alt="E-Girl 8413"
+          />
+          <h5>Hey, guess what?</h5>
+          <p class="card-text">
+            I've learned some cool new tricks - if you set some filters, I can
+            tell you what the last 10 NFTs matching those criteria sold for. I'd
+            recommend only using one or two filters at most - if you're too
+            specific, there might not be any data for me to look through!
+          </p>
         </div>
       </div>
     </div>
@@ -135,8 +185,12 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Background</span>
             </div>
-            <select class="form-select" name="data.Background">
-            <option value="" selected>Any</option>
+            <select
+              class="form-select"
+              name="data.Background"
+              id="data.Background"
+            >
+              <option value="" selected>Any</option>
               <option value="Blue">Blue (1100)</option>
               <option value="Blue Artist">Blue Artist (270)</option>
               <option value="Blue Desk">Blue Desk (270)</option>
@@ -164,8 +218,8 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Chair</span>
             </div>
-            <select class="form-select" name="data.Chair">
-            <option value="" selected>Any</option>
+            <select class="form-select" name="data.Chair" id="data.Chair">
+              <option value="" selected>Any</option>
               <option value="Black Gaming">Black Gaming (1000)</option>
               <option value="Black Office">Black Office (700)</option>
               <option value="Black Support">Black Support (650)</option>
@@ -185,8 +239,12 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Body Base</span>
             </div>
-            <select class="form-select" name="data.Body Base">
-            <option value="" selected>Any</option>
+            <select
+              class="form-select"
+              name="data.Body Base"
+              id="data.Body Base"
+            >
+              <option value="" selected>Any</option>
               <option value="Alien">Alien (50)</option>
               <option value="Blue">Blue (400)</option>
               <option value="Body 1">Body 1 (750)</option>
@@ -209,22 +267,30 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Blush</span>
             </div>
-            <select class="form-select" name="data.Blush">
-            <option value="" selected>Any</option>
-              <option value="Blush">5000</option>
+            <select class="form-select" name="data.Blush" id="data.Blush">
+              <option value="" selected>Any</option>
+              <option value="Blush">Blush (5000)</option>
             </select>
           </div>
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text">Accessories</span>
             </div>
-            <select class="form-select" name="data.Accessories">
-            <option value="" selected>Any</option>
+            <select
+              class="form-select"
+              name="data.Accessories"
+              id="data.Accessories"
+            >
+              <option value="" selected>Any</option>
               <option value="Choker">Choker (900)</option>
               <option value="Collar">Collar (900)</option>
-              <option value="Daddy Issues Tattoo">Daddy Issues Tattoo (705)</option>
+              <option value="Daddy Issues Tattoo">
+                Daddy Issues Tattoo (705)
+              </option>
               <option value="Double Necklace">Double Necklace (900)</option>
-              <option value="Double Necklace with Charm">Double Necklace with Charm (900)</option>
+              <option value="Double Necklace with Charm">
+                Double Necklace with Charm (900)
+              </option>
               <option value="Element Tattoo">Element Tattoo (705)</option>
               <option value="Flower Tattoo">Flower Tattoo (705)</option>
               <option value="Halo">Halo (55)</option>
@@ -240,8 +306,8 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Nails</span>
             </div>
-            <select class="form-select" name="data.Nails">
-            <option value="" selected>Any</option>
+            <select class="form-select" name="data.Nails" id="data.Nails">
+              <option value="" selected>Any</option>
               <option value="Black Nails">Black Nails (2500)</option>
               <option value="Purple Nails">Purple Nails (2500)</option>
               <option value="Red Nails">Red Nails (2500)</option>
@@ -251,77 +317,131 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Bottoms</span>
             </div>
-            <select class="form-select" name="data.Bottoms">
-            <option value="" selected>Any</option>
+            <select class="form-select" name="data.Bottoms" id="data.Bottoms">
+              <option value="" selected>Any</option>
               <option value="Black Jeans">Black Jeans (1055)</option>
               <option value="Black Leggings">Black Leggings (1055)</option>
               <option value="Black Shorts">Black Shorts (1055)</option>
-              <option value="Black Shorts with Fishnets">Black Shorts with Fishnets (1055)</option>
-              <option value="Black Shorts with Striped Stockings">Black Shorts with Striped Stockings (505)</option>
+              <option value="Black Shorts with Fishnets">
+                Black Shorts with Fishnets (1055)
+              </option>
+              <option value="Black Shorts with Striped Stockings">
+                Black Shorts with Striped Stockings (505)
+              </option>
               <option value="Blue Jeans">Blue Jeans (1055)</option>
               <option value="Light Jeans">Light Jeans (1055)</option>
               <option value="White Jeans">White Jeans (1055)</option>
               <option value="White Shorts">White Shorts (1055)</option>
-              <option value="White Shorts with Fishnets">White Shorts with Fishnets (1055)</option>
+              <option value="White Shorts with Fishnets">
+                White Shorts with Fishnets (1055)
+              </option>
             </select>
           </div>
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text">Shirts</span>
             </div>
-            <select class="form-select" name="data.Shirts">
-            <option value="" selected>Any</option>
+            <select class="form-select" name="data.Shirts" id="data.Shirts">
+              <option value="" selected>Any</option>
               <option value="Black Alien Tee">Black Alien Tee (221)</option>
-              <option value="Black Collared Blouse">Black Collared Blouse (171)</option>
+              <option value="Black Collared Blouse">
+                Black Collared Blouse (171)
+              </option>
               <option value="Black Cropped Tee">Black Cropped Tee (171)</option>
               <option value="Black Hoodie">Black Hoodie (221)</option>
-              <option value="Black School Uniform">Black School Uniform (171)</option>
+              <option value="Black School Uniform">
+                Black School Uniform (171)
+              </option>
               <option value="Black Sweater">Black Sweater (171)</option>
               <option value="Black Tank">Black Tank (171)</option>
               <option value="Black Tee">Black Tee (171)</option>
-              <option value="Black Tee with Fishnets">Black Tee with Fishnets (171)</option>
-              <option value="Black Tee with Stripped Undershirt">Black Tee with Stripped Undershirt (171)</option>
-              <option value="Blue Collared Blouse">Blue Collared Blouse (171)</option>
-              <option value="Blue Frilly Blouse">Blue Frilly Blouse (171)</option>
+              <option value="Black Tee with Fishnets">
+                Black Tee with Fishnets (171)
+              </option>
+              <option value="Black Tee with Stripped Undershirt">
+                Black Tee with Stripped Undershirt (171)
+              </option>
+              <option value="Blue Collared Blouse">
+                Blue Collared Blouse (171)
+              </option>
+              <option value="Blue Frilly Blouse">
+                Blue Frilly Blouse (171)
+              </option>
               <option value="Blue Hoodie">Blue Hoodie (221)</option>
-              <option value="Blue Kitten Tube Top">Blue Kitten Tube Top (171)</option>
+              <option value="Blue Kitten Tube Top">
+                Blue Kitten Tube Top (171)
+              </option>
               <option value="Blue Tank">Blue Tank (171)</option>
-              <option value="Celestial Tank Top">Celestial Tank Top (171)</option>
-              <option value="Checkerboard Shirt">Checkerboard Shirt (171)</option>
+              <option value="Celestial Tank Top">
+                Celestial Tank Top (171)
+              </option>
+              <option value="Checkerboard Shirt">
+                Checkerboard Shirt (171)
+              </option>
               <option value="Gold Tank Top">Gold Tank Top (171)</option>
-              <option value="Green Collared Blouse">Green Collared Blouse (171)</option>
+              <option value="Green Collared Blouse">
+                Green Collared Blouse (171)
+              </option>
               <option value="Green Corset">Green Corset (171)</option>
               <option value="Green Halter">Green Halter (171)</option>
-              <option value="Jean Jacket with Blank Tank">Jean Jacket with Blank Tank (171)</option>
-              <option value="Jean Jacket with White Tank">Jean Jacket with White Tank (171)</option>
+              <option value="Jean Jacket with Blank Tank">
+                Jean Jacket with Blank Tank (171)
+              </option>
+              <option value="Jean Jacket with White Tank">
+                Jean Jacket with White Tank (171)
+              </option>
               <option value="Leather Corset">Leather Corset (171)</option>
-              <option value="Light Blue Frilly Blouse">Light Blue Frilly Blouse (171)</option>
+              <option value="Light Blue Frilly Blouse">
+                Light Blue Frilly Blouse (171)
+              </option>
               <option value="Lime Hoodie">Lime Hoodie (221)</option>
-              <option value="Mint Frilly Blouse">Mint Frilly Blouse (171)</option>
-              <option value="Pink Collared Blouse">Pink Collared Blouse (171)</option>
+              <option value="Mint Frilly Blouse">
+                Mint Frilly Blouse (171)
+              </option>
+              <option value="Pink Collared Blouse">
+                Pink Collared Blouse (171)
+              </option>
               <option value="Pink Cropped Polo">Pink Cropped Polo (171)</option>
-              <option value="Pink Frilly Blouse">Pink Frilly Blouse (171)</option>
+              <option value="Pink Frilly Blouse">
+                Pink Frilly Blouse (171)
+              </option>
               <option value="Pinke Hoodie">Pinke Hoodie (171)</option>
-              <option value="Pink Scarf with Black Tank Top">Pink Scarf with Black Tank Top (171)</option>
-              <option value="Purple Scarf with White Tank Top">Purple Scarf with White Tank Top (171)</option>
+              <option value="Pink Scarf with Black Tank Top">
+                Pink Scarf with Black Tank Top (171)
+              </option>
+              <option value="Purple Scarf with White Tank Top">
+                Purple Scarf with White Tank Top (171)
+              </option>
               <option value="Purple Sweater">Purple Sweater (171)</option>
               <option value="Racer Shirt">Racer Shirt (71)</option>
               <option value="Rainbow Halter">Rainbow Halter (171)</option>
               <option value="Rainbow Tee">Rainbow Tee (221)</option>
               <option value="Red Halter">Red Halter (171)</option>
-              <option value="Red Jacket with Black Tank">Red Jacket with Black Tank (171)</option>
+              <option value="Red Jacket with Black Tank">
+                Red Jacket with Black Tank (171)
+              </option>
               <option value="Red Sweater">Red Sweater (171)</option>
               <option value="Shnazzy Hoodie">Shnazzy Hoodie (400)</option>
               <option value="Shnazzy Tee">Shnazzy Tee (400)</option>
-              <option value="Shnazzy Tee wuth Pink Undershirt">Shnazzy Tee wuth Pink Undershirt (400)</option>
+              <option value="Shnazzy Tee wuth Pink Undershirt">
+                Shnazzy Tee wuth Pink Undershirt (400)
+              </option>
               <option value="Sun Tee">Sun Tee (221)</option>
               <option value="Tan Tank">Tan Tank (171)</option>
               <option value="White Alien Tee">White Alien Tee (221)</option>
               <option value="White Crop Top">White Crop Top (171)</option>
-              <option value="White Cropped Polo">White Cropped Polo (171)</option>
-              <option value="White Frilly Blouse">White Frilly Blouse (171)</option>
-              <option value="White Kitten Tube Top">White Kitten Tube Top (171)</option>
-              <option value="White School Uniform">White School Uniform (171)</option>
+              <option value="White Cropped Polo">
+                White Cropped Polo (171)
+              </option>
+              <option value="White Frilly Blouse">
+                White Frilly Blouse (171)
+              </option>
+              <option value="White Kitten Tube Top">
+                White Kitten Tube Top (171)
+              </option>
+              <option value="White School Uniform">
+                White School Uniform (171)
+              </option>
               <option value="White Sweater">White Sweater (171)</option>
               <option value="White Tank">White Tank (171)</option>
             </select>
@@ -330,91 +450,155 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Hair</span>
             </div>
-            <select class="form-select" name="data.Hair">
-            <option value="" selected>Any</option>
-              <option value="Black and Blonde Curled Bob">Black and Blonde Curled Bob (132)</option>
+            <select class="form-select" name="data.Hair" id="data.Hair">
+              <option value="" selected>Any</option>
+              <option value="Black and Blonde Curled Bob">
+                Black and Blonde Curled Bob (132)
+              </option>
               <option value="Black Beanie">Black Beanie (132)</option>
               <option value="Black Bob">Black Bob (132)</option>
-              <option value="Black Bob with Blue Halo Bangs">Black Bob with Blue Halo Bangs (232)</option>
-              <option value="Black Bob with Silver Halo Bangs">Black Bob with Silver Halo Bangs (232)</option>
+              <option value="Black Bob with Blue Halo Bangs">
+                Black Bob with Blue Halo Bangs (232)
+              </option>
+              <option value="Black Bob with Silver Halo Bangs">
+                Black Bob with Silver Halo Bangs (232)
+              </option>
               <option value="Black Braid">Black Braid (132)</option>
               <option value="Black Curled Bob">Black Curled Bob (132)</option>
-              <option value="Black Curley Space Buns">Black Curley Space Buns (132)</option>
+              <option value="Black Curley Space Buns">
+                Black Curley Space Buns (132)
+              </option>
               <option value="Black Double Pony">Black Double Pony (132)</option>
               <option value="Black Half Up Bob">Black Half Up Bob (132)</option>
               <option value="Black Lob">Black Lob (132)</option>
-              <option value="BlackLob with Silver Halo Bangs">BlackLob with Silver Halo Bangs (232)</option>
+              <option value="BlackLob with Silver Halo Bangs">
+                BlackLob with Silver Halo Bangs (232)
+              </option>
               <option value="Black Mohawk">Black Mohawk (132)</option>
               <option value="Black Ponytail">Black Ponytail (132)</option>
               <option value="Black Space Buns">Black Space Buns (132)</option>
               <option value="Black Top Bun">Black Top Bun (132)</option>
-              <option value="Blue Half Down Space Buns">Blue Half Down Space Buns (132)</option>
+              <option value="Blue Half Down Space Buns">
+                Blue Half Down Space Buns (132)
+              </option>
               <option value="Blue Half Up Lob">Blue Half Up Lob (132)</option>
               <option value="Blue Ombre Braid">Blue Ombre Braid (132)</option>
               <option value="Blue Space Buns">Blue Space Buns (132)</option>
-              <option value="Blue to Green Ombre Ponytil">Blue to Green Ombre Ponytil (132)</option>
+              <option value="Blue to Green Ombre Ponytil">
+                Blue to Green Ombre Ponytil (132)
+              </option>
               <option value="Blue Top Bun">Blue Top Bun (132)</option>
-              <option value="Brown and Blonde Half Down Space Buns">Brown and Blonde Half Down Space Buns (132)</option>
+              <option value="Brown and Blonde Half Down Space Buns">
+                Brown and Blonde Half Down Space Buns (132)
+              </option>
               <option value="Brown Bob">Brown Bob (132)</option>
-              <option value="Brown Bob with Blonde Halo Bangs">Brown Bob with Blonde Halo Bangs (232)</option>
-              <option value="Brown Bob with Pink Halo Bangs">Brown Bob with Pink Halo Bangs (132)</option>
-              <option value="Brown Bob with Purple Halo Bangs">Brown Bob with Purple Halo Bangs (132)</option>
+              <option value="Brown Bob with Blonde Halo Bangs">
+                Brown Bob with Blonde Halo Bangs (232)
+              </option>
+              <option value="Brown Bob with Pink Halo Bangs">
+                Brown Bob with Pink Halo Bangs (132)
+              </option>
+              <option value="Brown Bob with Purple Halo Bangs">
+                Brown Bob with Purple Halo Bangs (132)
+              </option>
               <option value="Brown Braid">Brown Braid (132)</option>
               <option value="Brown Braids">Brown Braids (132)</option>
-              <option value="Brown Curley Space Buns">Brown Curley Space Buns (132)</option>
-              <option value="Brown Half Down Space Buns">Brown Half Down Space Buns (132)</option>
+              <option value="Brown Curley Space Buns">
+                Brown Curley Space Buns (132)
+              </option>
+              <option value="Brown Half Down Space Buns">
+                Brown Half Down Space Buns (132)
+              </option>
               <option value="Brown Half Up Lob">Brown Half Up Lob (132)</option>
-              <option value="Brown Half Up Lob with Blue Bangs">Brown Half Up Lob with Blue Bangs (132)</option>
-              <option value="Brown Half Up Lob with Pink Streaks">Brown Half Up Lob with Pink Streaks (132)</option>
-              <option value="Brown Lob with Blonde Halo Bangs">Brown Lob with Blonde Halo Bangs (232)</option>
-              <option value="Brown Lob with Pink Halo Bangs">Brown Lob with Pink Halo Bangs (232)</option>
+              <option value="Brown Half Up Lob with Blue Bangs">
+                Brown Half Up Lob with Blue Bangs (132)
+              </option>
+              <option value="Brown Half Up Lob with Pink Streaks">
+                Brown Half Up Lob with Pink Streaks (132)
+              </option>
+              <option value="Brown Lob with Blonde Halo Bangs">
+                Brown Lob with Blonde Halo Bangs (232)
+              </option>
+              <option value="Brown Lob with Pink Halo Bangs">
+                Brown Lob with Pink Halo Bangs (232)
+              </option>
               <option value="Brown Space Buns">Brown Space Buns (132)</option>
-              <option value="Brown to Blonde Ombre Braids">Brown to Blonde Ombre Braids (132)</option>
+              <option value="Brown to Blonde Ombre Braids">
+                Brown to Blonde Ombre Braids (132)
+              </option>
               <option value="Brown top Bun">Brown top Bun (132)</option>
-              <option value="Dark Brown Curley Space Buns">Dark Brown Curley Space Buns (132)</option>
+              <option value="Dark Brown Curley Space Buns">
+                Dark Brown Curley Space Buns (132)
+              </option>
               <option value="Green Half Up Lob">Green Half Up Lob (132)</option>
               <option value="Green Mohawk">Green Mohawk (132)</option>
               <option value="Green Space Buns">Green Space Buns (132)</option>
-              <option value="Holographic Half Up Bob">Holographic Half Up Bob (10)</option>
+              <option value="Holographic Half Up Bob">
+                Holographic Half Up Bob (10)
+              </option>
               <option value="Orange Beanie">Orange Beanie (132)</option>
-              <option value="Pink and Blue Curled Bob">Pink and Blue Curled Bob (192)</option>
-              <option value="Pink and Brown Double Pony">Pink and Brown Double Pony (132)</option>
-              <option value="Pink and Purple Half Down Space Buns">Pink and Purple Half Down Space Buns (132)</option>
+              <option value="Pink and Blue Curled Bob">
+                Pink and Blue Curled Bob (192)
+              </option>
+              <option value="Pink and Brown Double Pony">
+                Pink and Brown Double Pony (132)
+              </option>
+              <option value="Pink and Purple Half Down Space Buns">
+                Pink and Purple Half Down Space Buns (132)
+              </option>
               <option value="Pink Lob">Pink Lob (132)</option>
               <option value="Pink Mohawk">Pink Mohawk (132)</option>
-              <option value="Pink Tipped Ponytail">Pink Tipped Ponytail (132)</option>
-              <option value="Purple and Green Curled Bob">Purple and Green Curled Bob (132)</option>
+              <option value="Pink Tipped Ponytail">
+                Pink Tipped Ponytail (132)
+              </option>
+              <option value="Purple and Green Curled Bob">
+                Purple and Green Curled Bob (132)
+              </option>
               <option value="Purple Braids">Purple Braids (132)</option>
               <option value="Purple Curled Bob">Purple Curled Bob (132)</option>
               <option value="Purple Mohawk">Purple Mohawk (132)</option>
-              <option value="Purple Ombre Braid">Purple Ombre Braid (132)</option>
+              <option value="Purple Ombre Braid">
+                Purple Ombre Braid (132)
+              </option>
               <option value="Purple Space Buns">Purple Space Buns (132)</option>
-              <option value="Purple Tipped Ponytail">Purple Tipped Ponytail (132)</option>
-              <option value="Purple to Green Ombre Poinytail">Purple to Green Ombre Poinytail (132)</option>
+              <option value="Purple Tipped Ponytail">
+                Purple Tipped Ponytail (132)
+              </option>
+              <option value="Purple to Green Ombre Poinytail">
+                Purple to Green Ombre Poinytail (132)
+              </option>
               <option value="Purple Top Bun">Purple Top Bun (132)</option>
               <option value="Red Beanie">Red Beanie (132)</option>
               <option value="Red Braid">Red Braid (132)</option>
               <option value="Red Curled Bob">Red Curled Bob (132)</option>
-              <option value="Red Curley Space Buns">Red Curley Space Buns (132)</option>
+              <option value="Red Curley Space Buns">
+                Red Curley Space Buns (132)
+              </option>
               <option value="Red Lob">Red Lob (132)</option>
               <option value="Red Space Buns">Red Space Buns (132)</option>
-              <option value="Red Tipped Curley Space Buns">Red Tipped Curley Space Buns (132)</option>
+              <option value="Red Tipped Curley Space Buns">
+                Red Tipped Curley Space Buns (132)
+              </option>
               <option value="Red Tipped Mohawk">Red Tipped Mohawk (132)</option>
               <option value="Red Top Bun">Red Top Bun (132)</option>
               <option value="Short Brown">Short Brown (55)</option>
               <option value="Short Green">Short Green (55)</option>
               <option value="Short Purple">Short Purple (57)</option>
               <option value="Short Red">Short Red (55)</option>
-              <option value="Silver Double Pony">Silver Double Pony (132)</option>
+              <option value="Silver Double Pony">
+                Silver Double Pony (132)
+              </option>
             </select>
           </div>
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text">Eyebrows</span>
             </div>
-            <select class="form-select" name="data.Eyebrows">
-            <option value="" selected>Any</option>
-              <option value="Eyebows with Pircing">Eyebows with Pircing (505)</option>
+            <select class="form-select" name="data.Eyebrows" id="data.Eyebrows">
+              <option value="" selected>Any</option>
+              <option value="Eyebows with Pircing">
+                Eyebows with Pircing (505)
+              </option>
               <option value="Eyebrows 1">Eyebrows 1 (1055)</option>
               <option value="Eyebrows 2">Eyebrows 2 (1055)</option>
               <option value="Eyebrows 3">Eyebrows 3 (1055)</option>
@@ -430,8 +614,8 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Eyes</span>
             </div>
-            <select class="form-select" name="data.Eyes">
-            <option value="" selected>Any</option>
+            <select class="form-select" name="data.Eyes" id="data.Eyes">
+              <option value="" selected>Any</option>
               <option value="Blue Eyes 1">Blue Eyes 1 (550)</option>
               <option value="Blue Eyes 2">Blue Eyes 2 (550)</option>
               <option value="Blue Eyes 3">Blue Eyes 3 (550)</option>
@@ -458,11 +642,17 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Nose</span>
             </div>
-            <select class="form-select" name="data.Nose">
-            <option value="" selected>Any</option>
-              <option value="Nose with Piercings_1">Nose with Piercings 1 (100)</option>
-              <option value="Nose with Piercings_2">Nose with Piercings 2 (500)</option>
-              <option value="Nose with Piercings_3">Nose with Piercings 3 (400)</option>
+            <select class="form-select" name="data.Nose" id="data.Nose">
+              <option value="" selected>Any</option>
+              <option value="Nose with Piercings_1">
+                Nose with Piercings 1 (100)
+              </option>
+              <option value="Nose with Piercings_2">
+                Nose with Piercings 2 (500)
+              </option>
+              <option value="Nose with Piercings_3">
+                Nose with Piercings 3 (400)
+              </option>
               <option value="Nose 1">Nose 1 (900)</option>
               <option value="Nose 2">Nose 2 (900)</option>
               <option value="Nose 3">Nose 3 (900)</option>
@@ -479,8 +669,8 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Mouth</span>
             </div>
-            <select class="form-select" name="data.Mouth">
-            <option value="" selected>Any</option>
+            <select class="form-select" name="data.Mouth" id="data.Mouth">
+              <option value="" selected>Any</option>
               <option value="Blue Gloss">Blue Gloss (500)</option>
               <option value="Brown Gloss 1">Brown Gloss 1 (500)</option>
               <option value="Brown Gloss 2">Brown Gloss 2 (500)</option>
@@ -509,8 +699,8 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Glasses</span>
             </div>
-            <select class="form-select" name="data.Glasses">
-            <option value="" selected>Any</option>
+            <select class="form-select" name="data.Glasses" id="data.Glasses">
+              <option value="" selected>Any</option>
               <option value="3D">3D (100)</option>
               <option value="Cat Eye">Cat Eye (1000)</option>
               <option value="Rectangular">Rectangular (1000)</option>
@@ -521,11 +711,13 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Headset</span>
             </div>
-            <select class="form-select" name="data.Headset">
-            <option value="" selected>Any</option>
+            <select class="form-select" name="data.Headset" id="data.Headset">
+              <option value="" selected>Any</option>
               <option value="Basic Black">Basic Black (370)</option>
               <option value="Black Gaming">Black Gaming (390)</option>
-              <option value="Black Horned Gaming">Black Horned Gaming (270)</option>
+              <option value="Black Horned Gaming">
+                Black Horned Gaming (270)
+              </option>
               <option value="Blue Basic">Blue Basic (370)</option>
               <option value="Blue Cat Ear">Blue Cat Ear (870)</option>
               <option value="Gold Basic">Gold Basic (370)</option>
@@ -543,11 +735,15 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Handheld</span>
             </div>
-            <select class="form-select" name="data.Handheld">
-            <option value="" selected>Any</option>
+            <select class="form-select" name="data.Handheld" id="data.Handheld">
+              <option value="" selected>Any</option>
               <option value="Banana">Banana (100)</option>
-              <option value="Black and Green Controller">Black and Green Controller (646)</option>
-              <option value="Black and Red Controller">Black and Red Controller (646)</option>
+              <option value="Black and Green Controller">
+                Black and Green Controller (646)
+              </option>
+              <option value="Black and Red Controller">
+                Black and Red Controller (646)
+              </option>
               <option value="Black Controller">Black Controller (646)</option>
               <option value="Black Phone">Black Phone (646)</option>
               <option value="Black Vape">Black Vape (60)</option>
@@ -572,10 +768,52 @@
           <button type="submit" class="btn shnazzy-btn my-2" method="GET">
             Search the market!
           </button>
+          <button id="run-stats" type="button" class="btn shnazzy-btn my-2">
+            Run Stats!
+          </button>
         </div>
       </form>
     </div>
-    <div class="px-2 py-1 my-4 container">
+
+    <div class="px-2 py-1 my-4 container" id="stats-div" hidden="true">
+      <div class="card">
+        <div class="card-body">
+          <img
+            src="img/egirl8413.png"
+            class="float-start me-4"
+            width="10%"
+            alt="E-Girl 8413"
+          />
+          <div class="container">
+            <h5>It's stats time!</h5>
+            <p id="stats-spinner">
+              I'm trawling the interwebs now, please wait...<span
+                id="test_spin"
+                class="spinner-border spinner-border-sm"
+                role="status"
+              ></span>
+            </p>
+            <p class="card-text">
+              <div class="container"  id="stats-text">
+
+              </div>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="px-2 py-1 my-4 container" id="stats-div2" hidden="true">
+      <div class="card">
+        <div class="card-body">
+          <div
+            class="container"
+            id="stats-graph"
+            style="margin: auto auto"
+          ></div>
+        </div>
+      </div>
+    </div>
+    <div class="px-2 py-1 my-1 container">
       <div class="card">
         <div class="card-body">
           <img
@@ -602,5 +840,134 @@
         >
       </div>
     </footer>
+    <script type="text/python" id="whitelistgen">
+      import datetime
+      import json
+
+      from browser import document, ajax, html, aio, window
+      sales_url = "https://atomic.tokengamer.io/atomicmarket/v2/sales"
+
+      def read(req):
+          document["stats-spinner"].hidden = True
+          document["stats-div2"].hidden = False
+          
+          data = req.json["data"]
+          if not data:
+            document["stats-text"] <= html.P("No results found (⌣̩̩́_⌣̩̩̀)")
+          # parse sales
+          timestamps = []
+          prices = []
+          names = []
+          images = []
+          links = []
+          traits = []
+          for sale in data:
+              timestamps.append(datetime.datetime.fromtimestamp(int(sale["updated_at_time"])/1000))
+              prices.append(int(sale["price"]["amount"])/10**8)
+              names.append([f'#{val.split(" ")[-1]}' for key,val in sale["assets"][0]["data"].items() if key == "name"][0])
+              images.append([val for key,val in sale["assets"][0]["data"].items() if key == "img"][0])
+              traits.append(sale["assets"][0]["data"])
+              links.append(f"https://neftyblocks.com/c/shnazzegirls/marketplace/{sale['sale_id']}")
+          pieces = []
+          tabletext = """<thead>
+              <tr>
+                <th scope="col" class="text-center"">E-girl</th>
+                <th scope="col" class="text-center"">Image</th>
+                <th scope="col" class="text-center"">Traits</th>
+                <th scope="col" class="text-center"">Sale Time</th>
+                <th scope="col" class="text-center"">Price</th>
+              </tr>
+            </thead>
+            <tbody id="girltable">
+            </tbody>"""
+          document["stats-graph"] <= html.TABLE(tabletext,**{"class": "table table-hover"})
+          for i in range(len(timestamps)):
+              g_traits = traits[i]
+              c1 = ""
+              c2 = ""
+              toggle = True
+              price = '{:.3f}'.format(prices[i])
+              for key,val in g_traits.items():
+                  if key not in ["name","img"]:
+                      if toggle:
+                          c1 += f"<p><b>{key}</b>: {val}</p>"
+                      else:
+                          c2 += f"<p><b>{key}</b>: {val}</p>"
+                      toggle = not toggle
+              insert = f"""
+                <th class="text-center" scope="row"><a href="{links[i]}" target="_">{names[i]}</a></th>
+                <td width="20%"><img class="img-fluid" src="https://ipfs.sixpm.dev/ipfs/{images[i]}"></td>
+                <td>
+                  <div class="container">
+                    <div class="row align-items-center">
+                      <div class="col">
+                        {c1}
+                      </div>
+                      <div class="col">
+                        {c2}
+                      </div>
+                    </div>
+                  </div>
+                  </td>
+                <td>{timestamps[i].strftime("%b %d, %Y, %H:%M:%S")}</td>
+                <td>{price} WAX</td>"""
+              document["girltable"] <= html.TR(insert)
+          high = '{:.3f}'.format(max(prices))
+          low = '{:.3f}'.format(min(prices))
+          average = '{:.3f}'.format(sum(prices)/len(prices))
+          insert = f"""<div class="row align-items-center">
+            <div class="col">
+              <p><b>Sales found:</b> {'10+' if len(prices) == 10 else len(prices)}</p>
+              <p><b>Average Price:</b> {average}</p>
+            </div>
+            <div class="col">
+              <p><b>Highest Price:</b> {high}</p>
+              <p><b>Lowest Price:</b> {low}</p>
+            </div>
+          </div>"""
+          document["stats-text"] <= html.DIV(insert,**{"class":"container"})
+
+      async def run_the_numbers(e):
+          document["stats-div"].hidden = False
+          document["stats-div2"].hidden = True
+          document["stats-spinner"].hidden = False
+          document["stats-graph"].html = ""
+          document["stats-text"].html = ""
+          await aio.sleep(0)
+          attributes = [
+              "data.Background",
+              "data.Chair",
+              "data.Body Base",
+              "data.Blush",
+              "data.Accessories",
+              "data.Nails",
+              "data.Bottoms",
+              "data.Shirts",
+              "data.Hair",
+              "data.Eyebrows",
+              "data.Eyes",
+              "data.Nose",
+              "data.Mouth",
+              "data.Glasses",
+              "data.Headset",
+              "data.Handheld"
+          ]
+          params = {
+              "state":"3",
+              "collection_name":"shnazzegirls",
+              "schema_name":"e.girls",
+              "page":"1",
+              "limit":"10",
+              "order":"desc",
+              "sort":"created"
+            }
+          for i in attributes:
+              if document[i].value:
+                  params[i] = document[i].value
+          req = ajax.get(sales_url,data=params,mode="json",oncomplete=read)
+
+
+      document["run-stats"].bind("click",lambda e: aio.run(run_the_numbers(e)))
+    </script>
   </body>
 </html>
