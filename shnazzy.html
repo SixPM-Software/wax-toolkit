@@ -845,16 +845,23 @@
       import json
 
       from browser import document, ajax, html, aio, window
+      from browser.session_storage import storage
+      from browser.object_storage import ObjectStorage
       sales_url = "https://atomic.tokengamer.io/atomicmarket/v2/sales"
+
+      object_storage = ObjectStorage(storage)
 
       def read(req):
           document["stats-spinner"].hidden = True
-          document["stats-div2"].hidden = False
+          
           
           data = req.json["data"]
           if not data:
-            document["stats-text"] <= html.P("No results found (T-T)")
-            return
+          document["stats-text"] <= html.P("No results found (T-T)")
+          return
+          document["stats-div2"].hidden = False
+          params = object_storage["last_search"]
+          search_keys = [key.split(".")[-1] for key in params]
           # parse sales
           timestamps = []
           prices = []
@@ -890,6 +897,8 @@
               price = '{:.3f}'.format(prices[i])
               for key,val in g_traits.items():
                   if key not in ["name","img"]:
+                      if key in search_keys:
+                          key = f"<u><i>{key}</u></i>
                       if toggle:
                           c1 += f"<p><b>{key}</b>: {val}</p>"
                       else:
@@ -966,6 +975,7 @@
           for i in attributes:
               if document[i].value:
                   params[i] = document[i].value
+          object_storage["last_search"] = params
           req = ajax.get(sales_url,data=params,mode="json",oncomplete=read)
 
 
