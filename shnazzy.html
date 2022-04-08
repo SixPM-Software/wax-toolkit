@@ -858,7 +858,7 @@
           data = req.json["data"]
           if not data:
               document["stats-text"] <= html.P("No results found (T-T)")
-          return
+              return
           document["stats-div2"].hidden = False
           params = object_storage["last_search"]
           search_keys = [key.split(".")[-1] for key in params]
