@@ -926,6 +926,7 @@
               <p><b>Lowest Price:</b> {low}</p>
             </div>
           </div>"""
+          document["stats-text"] <= html.P("I found some previous sales! (^u^)")
           document["stats-text"] <= html.DIV(insert,**{"class":"container"})
 
       async def run_the_numbers(e):
