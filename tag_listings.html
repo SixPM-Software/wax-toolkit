@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TAG Sales</title>
+
+        <script src="https://cdn.jsdelivr.net/npm/brython@3/brython.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/brython@3/brython_stdlib.js"></script>
+
+        <link rel="icon" href="img/favicon-32x32.png">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        <style>
+            .b-example-divider {
+                height: 3rem;
+                background-color: rgba(0, 0, 0, .1);
+                border: solid rgba(0, 0, 0, .15);
+                border-width: 1px 0;
+                box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+            }
+            
+
+        </style>
+    </head>
+    <body onload="brython()">
+
+        <div class="bg-dark text-secondary px-4 py-5 text-center">
+            <div class="py-5">
+                <a href="./index.html"><img class="d-block mx-auto mb-4" src="img/gold stamp.png" alt="" width="72" height="72"></a>
+                <h1 class="display-5 fw-bold text-white">TAG Sales</h1>
+                <div class="col-lg-6 mx-auto">
+                    <p class="fs-5 mb-4">Lazy site cause procrastination!</p>
+                    <!-- <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        <a href="#data-form"><button type="button" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Generate a whitelist!</button></a>
+                        <a href="#see-how-it-works"><button type="button" class="btn btn-outline-secondary btn-lg px-4">This</button></a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="px-2 py-5 my-4 container">
+            <h1>Interaction finder</h1>
+            <p>Click the button to go!
+            <br>
+            Data grabbing may take a while.
+            I've done my best to check that this tool is accurate, but if you notice anything wrong with the lists, please contact me on <a href="https://discord.gg/sixpm">Discord</a>.</p>
+
+            <div class="container py-5">
+                <form id="whitelist-form">
+                    <button id="run-stats" type="button" class="btn btn-success my-2">
+                        Go!
+                    </button>
+                    <textarea class="form-control" id="output" placeholder="Your data will appear here!" rows=5></textarea>
+                </form>
+            </div>  
+
+            <footer class="footer mt-auto py-3 bg-light">
+                <div class="container">
+                  <span class="text-muted">Built in Python with ❤️ by stuckatsixpm</span>
+                </div>
+            </footer>
+        
+        <script type="text/python" id="whitelistgen">
+            import datetime
+            import json
+
+            from browser import document, ajax, html, aio, window
+            from browser.session_storage import storage
+            from browser.object_storage import ObjectStorage
+
+            object_storage = ObjectStorage(storage)
+            sales_url = "https://atomic.tokengamer.io/atomicmarket/v2/sales"
+
+            def read(req):
+                data = req.json
+                print(data)
+                data = data['data']
+                if object_storage["page"] == 1:
+                    document['output'].text = "name,template_id,price,sale_id"
+                if not data: 
+                    document['output'].text = "No matches"
+                else:
+                    listings = [f"{d['assets'][0]['name']},{d['assets'][0]['template']['template_id']},{int(d['price']['amount'])/(10**8)},{int(d['sale_id'])}" for d in data]
+                    listings = "\n".join(listings)
+                    document['output'].text += "\n"+listings
+                    if len(data) == 100:
+                        aio.run(run_the_numbers(1,object_storage["page"] + 1))
+                    else:
+                        document["run-stats"].text = "Done"
+
+
+
+            async def run_the_numbers(e,page):
+                object_storage["page"] = page
+                
+                document["run-stats"].text = "Searching - please wait"
+                await aio.sleep(0)
+                params = {
+                    "page":page,
+                    "max_assets":1,
+                    "state":"1",
+                    "collection_name":"tag",
+                    "limit": 100,
+                    "order": "asc",
+                    "sort": "created"
+                    }
+                req = ajax.get(sales_url,data=params,mode="json",oncomplete=read)
+
+
+            document["run-stats"].bind("click",lambda e: aio.run(run_the_numbers(e,1)))
+
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+    </body>
+</html> 
