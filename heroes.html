@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Heroes of Midgard Checker</title>
+
+    <link rel="icon" href="img/favicon-32x32.png" />
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.10.6/brython.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.10.6/brython_stdlib.min.js">
+    </script>
+
+    <!-- JavaScript Bundle with Popper -->
+
+    <style>
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column h-100 "
+    style="background-image: url('./img/background_hom.webp'); background-size: cover; background-attachment: fixed;"
+    onload="brython()">
+    <main class="h-100" style="background-color: rgba(0, 0, 0, 0.5); background-size: cover; display: table;">
+        <div class="text-secondary px-4 py-5 text-center w-100" style="background-color: rgba(0, 0, 0, 0.6);">
+            <div class="py-5">
+                <a href="./index.html"><img class="d-block mx-auto mb-4 rounded-circle" src="img/hom.png" alt=""
+                        width="96" height="96"></a>
+                <h1 class="display-5 fw-bold text-white">Heroes of Midgard</h1>
+                <div class="col-lg-6 mx-auto">
+                    <p class="fs-5 mb-4 text-white">Hero Rarity Checker</p>
+                </div>
+            </div>
+        </div>
+        <div class="container border rounded border-white bg-light my-4">
+            <div class="container px-2 py-6 mt-4 w-100">
+                <h1>Find your heroes!</h1>
+                <p class="lead px-4 rounded" id="info_message">Try using <b>one</b> of the filters here</p>
+                <div class="container d-flex flex-wrap justify-content-center" id="params_section">
+                    <div class="container-md input-group mb-2">
+                        <span class="input-group-text">Asset ID</span>
+                        <input type="text" id="input_asset_id" class="form-control" placeholder="1099796906856"
+                            aria-label="Asset ID">
+                    </div>
+                    <div class="container-md input-group mb-2">
+                        <span class="input-group-text">Hero Number #</span>
+                        <input type="text" id="input_hero_id" class="form-control" placeholder="42"
+                            aria-label="Hero Number">
+                    </div>
+                    <div class="container-md input-group mb-2">
+                        <span class="input-group-text">WAX Address</span>
+                        <input type="text" id="input_wax_address" class="form-control" placeholder="abc12.wam"
+                            aria-label="WAX Address">
+                    </div>
+                    <button class="btn btn-primary" type="button" id="btn_go"><span id="test_spin"
+                            class="spinner-border spinner-border-sm" role="status" hidden></span> Go!</button>
+                </div>
+            </div>
+            <div class="container px-2 py-6 mt-4 w-100">
+                <hr>
+                <div id="navtop" class="container mt-4 w-25" hidden>
+                    <div class="row">
+                        <div class="col">
+                            <button class="w-100 btn btn-primary" type="button" id="btn_prev"
+                                name="btn_prev">Previous</button>
+                        </div>
+                        <div class="col">
+                            <button class="w-100 btn btn-primary" type="button" id="btn_next"
+                                name="btn_next">Next</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex text-center justify-content-center" id="data_area" hidden>
+                    <div class="flex-fill row row-cols-1 row-cols-sm-2 row-cols-md-4">
+
+                    </div>
+                </div>
+                <div id="navbot" class="container mt-4 w-25" hidden>
+                    <div class="row">
+                        <div class="col">
+                            <button class="w-100 btn btn-primary" type="button" id="btn_prev"
+                                name="btn_prev">Previous</button>
+                        </div>
+                        <div class="col">
+                            <button class="w-100 btn btn-primary" type="button" id="btn_next"
+                                name="btn_next">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer py-3 bg-dark ">
+        <div class=" text-center">
+            <span class="text-white">Built in Python with ❤️ by stuckatsixpm</span>
+        </div>
+    </footer>
+    <script type="text/python" id="gather_info">
+        import json
+        import math
+        import random
+        from browser import document, ajax, html, aio, window, timer
+        from browser.session_storage import storage
+        from browser.object_storage import ObjectStorage
+        global page
+        global params
+        page = 1
+        flip_buttons = {}
+
+        TRAITS = [
+                "body",
+                "hair",
+                "eyes",
+                "nose",
+                "mouth",
+                "scar",
+                "weapon",
+                "clothes",
+                "pet",
+                "background",
+            ]
+        
+        trait_scores = {"background": {"26": 80.0, "49": 83.33, "30": 80.0, "70": 117.65, "66": 117.65, "59": 117.65, "64": 117.65, "24": 80.0, "69": 117.65, "2": 80.0, "33": 80.0,
+        "19": 80.0, "40": 80.0, "36": 80.0, "87": 166.67, "61": 117.65, "55": 83.33, "67": 117.65, "15": 80.0, "1": 80.0, "37": 80.0, "54": 83.33, "65": 117.65, "31": 80.0, "28": 80.0,
+        "94": 166.67, "71": 117.65, "96": 200.0, "18": 80.0, "25": 80.0, "39": 80.0, "56": 117.65, "81": 117.65, "4": 80.0, "35": 80.0, "86": 166.67, "6": 80.0, "78": 117.65, "16": 80.0,
+        "82": 117.65, "84": 117.65, "47": 83.33, "17": 80.0, "27": 80.0, "41": 80.0, "48": 83.33, "51": 83.33, "29": 80.0, "91": 166.67, "11": 80.0, "34": 80.0, "13": 80.0, "20": 80.0, 
+        "57": 117.65, "72": 117.65, "12": 80.0, "32": 80.0, "23": 80.0, "95": 166.67, "93": 166.67, "45": 80.0, "43": 80.0, "5": 80.0, "68": 117.65, "83": 117.65, "85": 166.67, "92": 166.67, 
+        "77": 117.65, "80": 117.65, "52": 83.33, "8": 80.0, "3": 80.0, "90": 166.67, "63": 117.65, "22": 80.0, "42": 80.0, "10": 80.0, "46": 83.33, "62": 117.65, "44": 80.0, "21": 80.0, "38": 80.0, 
+        "60": 117.65, "53": 83.33, "79": 117.65, "58": 117.65, "7": 80.0, "74": 117.65, "50": 83.33, "88": 166.67, "73": 117.65, "14": 80.0, "9": 80.0, "76": 117.65, "75": 117.65, "89": 166.67}, 
+        "weapon": {"None": 2.0, "Green Crystal Staff": 10.0, "Sword of the Mountain": 10.0, "Bow of Hope": 10.0, "Shadow Daggers": 10.0, "Bath Brush": 10.0}, "body": {"Pale": 5.71, "Tan": 5.71, 
+        "Brown": 5.71, "Ivory": 5.71, "Pink": 13.33, "Honey": 5.71, "Kitty": 20.0}, "scar": {"None": 1.11, "Scar": 20.0, "2 for 1": 21.05}, "mouth": {"Mouth 11": 10.0, "Mouth 04": 10.0, 
+        "Mouth 03": 10.0, "Mouth 05": 10.0, "Mouth 07": 10.0, "Mouth 08": 10.0, "Mouth 09": 10.0, "Mouth 01": 10.0, "Mouth 02": 13.33, "Mouth 10": 26.67, "Mouth 06": 11.43}, "nose": {"Nose 08": 10.58, 
+        "Nose 07": 10.58, "Nose 03": 10.58, "Nose 10": 10.58, "Nose 01": 10.58, "Nose 05": 10.58, "Nose 09": 10.58, "Nose 04": 10.58, "Nose 02": 10.58, "Nose 06": 10.58, "No Nose - Kitty": 20.0, 
+        "No Nose": 200.0}, "eyes": {"Eyes 15 - Slate": 76.92, "Eyes 16 - Bright Gold": 133.33, "Eyes 13 - Brown": 133.33, "Eyes 10 - Pink": 100.0, "Eyes 2 - Olive": 66.67, "Eyes 4 - Light Sea": 66.67, 
+        "Eyes 17 - Aqua": 80.0, "Eyes 2 - Blue": 66.67, "Eyes 8 - Apple": 100.0, "Eyes 6 - Blue": 100.0, "Eyes 3 - Blue": 80.0, "Eyes 10 - Purple": 100.0, "Eyes 8 - Pink": 100.0, "Eyes 17 - Blue": 80.0, 
+        "Eyes 3 - Yellow": 80.0, "Eyes 14 - Black": 133.33, "Eyes 15 - Apple": 76.92, "Eyes 11 - Gray": 100.0, "Eyes 5 - Dark Green": 80.0, "Eyes 3 - Red": 80.0, "Eyes 17 - Gold": 80.0, 
+        "Eyes 7 - Light Pink": 100.0, "Eyes 18 - Bright Purple": 133.33, "Eyes 4 - Purple": 66.67, "Eyes 7 - Gold": 100.0, "Eyes 5 - Dark Blue": 80.0, "Eyes 8 - Blue": 100.0, "Eyes 6 - Aqua": 100.0, 
+        "Eyes 9 - Green": 100.0, "Eyes 1 - Pink": 66.67, "Eyes 18 - Bright Pink": 133.33, "Eyes 17 - Pink": 80.0, "Eyes 2 - Purple": 66.67, "Eyes 15 - Olive": 76.92, "Eyes 4 - Green": 66.67, 
+        "Eyes 1 - Baby Blue": 66.67, "Eyes 17 - Green Pink": 80.0, "Eyes 4 - Yellow-Green": 66.67, "Eyes 1 - Hardgreen": 66.67, "Eyes 12 - Pink Cyan": 133.33, "Eyes 7 - Light Slate": 100.0, 
+        "Eyes 16 - Bright Purple": 133.33, "Eyes 3 - Baby Blue": 80.0, "Eyes 10 - Green": 100.0, "Eyes 1 - Blue": 66.67, "Eyes 15 - Violet": 76.92, "Eyes 3 - Green": 80.0, "Eyes 1 - Red": 66.67, 
+        "Eyes 11 - Dark Red": 100.0, "Eyes 18 - Gold Devil": 133.33, "Eyes 4 - Blue": 66.67, "Eyes 14 - Violet": 133.33, "Eyes 6 - Violet": 100.0, "Eyes 1 - Gold": 66.67, "Eyes 12 - Green Violet": 133.33, 
+        "Eyes 12 - Red Blue": 133.33, "Eyes 7 - Light Blue": 100.0, "Eyes 11 - Dark Indigo": 100.0, "Eyes 17 - Red": 80.0, "Eyes 2 - Green": 66.67, "Eyes 8 - Aqua": 100.0, "Eyes 6 - Gold": 100.0, 
+        "Eyes 2 - Slate": 66.67, "Eyes 4 - Red": 66.67, "Eyes 15 - Brown": 76.92, "Eyes 13 - Olive": 133.33, "Eyes 7 - Light Green": 100.0, "Eyes 5 - Dark Red": 80.0, "Eyes 17 - Green": 80.0, 
+        "Eyes 12 - Gold Purple": 133.33, "Eyes 3 - Purple": 80.0, "Eyes 14 - Slate": 133.33, "Eyes 9 - Purple": 100.0, "Eyes 11 - Dark Green": 100.0, "Eyes 9 - Blue": 100.0, "Eyes 1 - Purple": 66.67, 
+        "Eyes 16 - Bright Pink": 133.33, "Eyes 9 - Pink": 100.0, "Eyes 18 - Bright Green": 133.33, "Eyes 13 - Slate": 133.33, "Eyes 9 - Aqua": 100.0, "Eyes 8 - Gold": 100.0, "Eyes 11 - Dark Blue": 100.0, 
+        "Eyes 10 - Blue": 100.0, "Eyes 5 - Black": 80.0, "Eyes 12 - Blue Green": 133.33, "Eyes 3 - Aqua": 80.0, "Eyes 14 - Brown": 133.33, "Eyes 10 - Aqua": 100.0, "Eyes 18 - Bright Blue": 133.33}, 
+        "hair": {"Ponytail Red": 333.33, "Back Ponytail Blonde": 285.71, "Long Highlight Green": 285.71, "Braid Side Blue": 285.71, "Back Ponytail Blue": 285.71, "Curtain Bangs Blonde": 285.71, 
+        "Side Part Blonde": 285.71, "Grass Purple": 285.71, "Bob Red": 250.0, "Fun Joker Maroon": 250.0, "Old Samuri Yellow": 250.0, "Boat Hat Red": 250.0, "Thai School Girls Blue Clip": 250.0, 
+        "Lisa Yellow Ponytail": 285.71, "Thai School Girls Green Clip": 250.0, "Bowl Cut Brown": 250.0, "Comb Over Palegreen": 285.71, "Gather Tight Blue": 250.0, "Front Side Braid Pale Green": 285.71, 
+        "Lockheart Purple": 250.0, "Sky High Pink Purple": 250.0, "Caesar Seagreen": 250.0, "Bed Head Brown": 250.0, "Rambutan Yellow": 250.0, "Lion Baby Blue": 250.0, "Straight Red": 250.0, 
+        "Upsweep Red": 333.33, "Sky High Green Forest": 250.0, "Bangs Aqua": 250.0, "Pineapple Purple": 250.0, "Grass Red": 285.71, "Pineapple Emerald": 250.0, "Two Side Buns Palegreen": 333.33, 
+        "Flat Iron Waves Bisque": 285.71, "Boat Hat Blue": 250.0, "Boat Hat Green": 250.0, "Open Right Pear": 333.33, "None - Kitty": 20.0, "Braid Side Green": 285.71, "Ponytail Green": 333.33, 
+        "Open Right Pink": 333.33, "Shag Green": 285.71, "Faux Hawk Aqua": 250.0, "Bob Purple": 250.0, "Back Bun Green": 250.0, "Bowl Cut Black": 250.0, "Old Samuri Blue": 250.0, 
+        "Fun Joker Purple": 250.0, "Short Spiked Yellow": 333.33, "Afro Red Highlight": 250.0, "Windy Green": 285.71, "Sky High Blue Sage": 250.0, "Otaku Red": 250.0, "Long Highlight Yellow": 285.71, 
+        "Afro Green Highlight": 250.0, "Faux Hawk Blond": 250.0, "Bed Head Purple": 250.0, "Cloud Purple": 250.0, "Back Bun Pink": 250.0, "Bangs Blue": 250.0, "Windy Red": 285.71, "Rambutan Blue": 250.0, 
+        "Caesar Red": 250.0, "Shag Oldrose": 285.71, "Old Samuri Red": 250.0, "Nami Violet": 500.0, "Bob Green": 250.0, "Square Yellow": 333.33, "Onifire": 500.0, "Grass Green": 285.71, 
+        "Long Highlight Red": 285.71, "Short Spiked Blue": 333.33, "Lion Blue": 250.0, "None": 100.0, "Side Fringe Up Blue": 250.0, "Straight Blue": 250.0, "Curtain Bangs Green": 285.71, 
+        "Faded Blue": 285.71, "Short Spiked Green": 333.33, "Ponytail Baby Blue": 333.33, "Straight Blonde": 250.0, "Sky High Red Indigo": 250.0, "Side Fringe Up Yellow": 250.0, 
+        "Long Asymmetrical Orange": 285.71, "Faux Hawk Red": 250.0, "Levi Style Green": 250.0, "Lion Purple": 250.0, "Fun Joker Baby Blue": 250.0, "Levi Style Blue": 250.0, "Braid Side Pink": 285.71, 
+        "Side Asymmertrical Red": 250.0, "Boat Hat Brown": 250.0, "Mohawk Purple": 250.0, "Lion Red": 250.0, "Salon Error Green": 250.0, "Levi Style Purple": 250.0, "Ponytail Yellow": 333.33, 
+        "Bangs Red": 250.0, "Korea Half Seashell": 500.0, "Biker Yellow": 500.0, "Oppa Blue": 250.0, "Lion Green": 250.0, "Nami Redorange": 500.0, "Bob Blue": 250.0, "Pineapple Yellow": 250.0, 
+        "Gather Tight Purple": 250.0, "Mohawk Blue": 250.0, "Faux Hawk Palegreen": 250.0, "Levi Style Red": 250.0, "Caesar Olive": 250.0, "Otaku Purple": 250.0, "Square Baby Blue": 333.33, 
+        "Thai School Girls Yellow Clip": 250.0, "Back Bun Purple": 250.0, "Comb Over Lavender": 285.71, "Floyd Wizard Hat": 2000.0, "Faded Purple": 285.71, "Slime Blue": 250.0, "Slime Yellow": 250.0, 
+        "Aye Aye Captain": 250.0, "Two Side Buns Whiteblue": 333.33, "Faded Red": 285.71, "Salon Error Baby Blue": 250.0, "Afro Blue Highlight": 250.0, "Faux Hawk Purple": 250.0, 
+        "Flat Iron Waves Slate": 285.71, "Two Side Buns Mistyrose": 333.33, "Mullet Black": 333.33, "Cloud Red": 250.0, "Slime Purple": 250.0, "Pixie Cut Steelblue": 333.33, "Short Perm Green": 333.33, 
+        "Back Ponytail Red": 285.71, "Cloud Green": 250.0, "Open Right Aqua": 333.33, "Straight Purple": 250.0, "Open Right Purple": 333.33, "Oppa Red": 250.0, "Thai School Girls Purple Clip": 250.0, 
+        "Straight Green": 250.0, "Gather Tight Orange": 250.0, "Dreadlock Red Clip": 285.71, "Bed Head Lime": 250.0, "Pixie Cut Brown": 333.33, "Pirate Coral": 500.0, "Shag Blue": 285.71, 
+        "Lisa Pink Ponytail": 285.71, "Long Asymmetrical Pink": 285.71, "Front Side Braid Tan": 285.71, "Sweet Heroine Pear": 666.67, "Prince Crown Pink": 1000.0, "Mohawk Green": 250.0, 
+        "Bangs Brown": 250.0, "Side Fringe Up Red": 250.0, "Curtain Bangs Pink": 285.71, "Biker Blue": 500.0, "Front Side Braid Sliver": 285.71, "Slime Pink": 250.0, "Mullet Slate": 333.33, 
+        "Mohawk Yellow": 250.0, "Otaku Green": 250.0, "Back Bun Brown": 250.0, "Perm Blonde": 333.33, "Curtain Bangs Purple": 285.71, "Bowl Cut Green": 250.0, "Perm Pink": 333.33, 
+        "Side Part Green": 285.71, "Side Part Blue": 285.71, "Flat Iron Waves Silver": 285.71, "Oppa Brown": 250.0, "Lockheart Green": 250.0, "Thai School Girls Red Clip": 250.0, "Oppa Green": 250.0, 
+        "Pineapple Red": 250.0, "Short Perm Purple": 333.33, "Gather Tight Yellow": 250.0, "Cloud Yellow": 250.0, "Manga Style Palegreen": 500.0, "Middle Part Lavender": 500.0, "Square Pink": 333.33, 
+        "Mohawk Red": 250.0, "Two Side Buns Tan": 333.33, "Grass Blonde": 285.71, "Square Green": 333.33, "Side Part Purple": 285.71, "Sweet Heroine Chanpagne": 666.67, "Side Fringe Up Pink": 250.0, 
+        "Lockheart Baby Blue": 250.0, "Afro Yellow Highlight": 250.0, "Comb Over Pink": 285.71, "Cloud Blue": 250.0, "Side Fringe Up Aqua": 250.0, "Comb Over Blonde": 285.71, "Shag Purple": 285.71,
+        "Caesar Marine": 250.0, "Mullet Ocher": 333.33, "Slime Green": 250.0, "Lockheart Champagne": 250.0, "Windy Purple": 285.71, "Short Perm Orange": 333.33, "Bowl Cut Purple": 250.0, 
+        "Back Bun Blue": 250.0, "Pirate Baby Blue": 500.0, "Kumas Ears": 400.0, "Caesar Green": 250.0, "Dreadlock Green Clip": 285.71, "Faded Turquoise": 285.71, "Boat Hat Turquoise": 250.0, 
+        "Lockheart Pink": 250.0, "Bed Head Blue": 250.0, "Rambutan Purple": 250.0, "Bed Head Green": 250.0, "Manga Style Lavender": 500.0, "Lisa Red Ponytail": 285.71, "Salon Error Purple": 250.0, 
+        "Salon Error Yellow": 250.0, "Side Part Red": 285.71, "Mullet Plum": 333.33, "Bangs Green": 250.0, "Gather Tight Green": 250.0, "Fun Joker Amber": 250.0, "Pixie Cut Purple": 333.33, 
+        "Short Perm Yellow": 333.33, "Bowl Cut Blue": 250.0, "Back Ponytail Purple": 285.71, "Perm Blue": 333.33, "Fun Joker Green": 250.0, "Windy Blonde": 285.71, "Side Asymmertrical Yellow": 250.0, 
+        "Perm Aqua": 333.33, "Side Asymmertrical Blue": 250.0, "Side Asymmertrical Green": 250.0, "Upsweep Blonde": 333.33, "Pirate Blonde": 500.0, "Sweet Heroine Whiteblue": 666.67, 
+        "Dreadlock Yellow Clip": 285.71, "Flat Iron Palepink Silver": 285.71, "Upsweep Blue": 333.33, "Sky High Brown Yellow": 250.0, "Rambutan Red": 250.0, "Rambutan Azure": 250.0, 
+        "Open Right Green": 333.33, "Faded Yellow": 285.71, "Otaku Yellow": 250.0, "Side Asymmertrical Purple": 250.0, "Levi Style Sage": 250.0, "Manga Style Silver": 500.0, "Upsweep Green": 333.33, 
+        "Long Asymmetrical Lime": 285.71, "Bob Yellow": 250.0, "Otaku Blue": 250.0, "Korea Half Violet Lavender": 500.0, "Nami Baby Blue": 500.0, "Pixie Cut Umber": 333.33, "Long Highlight Purple": 285.71, 
+        "Middle Part Palegreen": 500.0, "Windy Blue": 285.71, "Afro Pink Highlight": 250.0, "Long Asymmetrical Aqua": 285.71, "Shag Blonde": 285.71, "Pixie Cut Green": 333.33, "Braid Side Yellow": 285.71, 
+        "Bed Head Pink": 250.0, "Salon Error Pink": 250.0, "Short Spiked Red": 333.33, "Middle Part Pinkypink": 500.0, "Manga Style Pear": 500.0, "Prince Crown Yellow": 1000.0, "Prince Crown Blue": 1000.0, 
+        "Biker Red": 500.0}, "pet": {"None": 1.38, "Crystal Spirit Blue": 20.0, "Crystal Spirit Orange": 20.0, "Crystal Spirit Green": 20.0, "Plobby Green": 40.0, "Crystal Spirit Purple": 20.0, 
+        "Plobby Pink": 40.0, "Eye Bat": 2000.0, "Plobby Blue": 40.0}, "clothes": {"Archer": 10.0, "Spa Robe": 10.0, "Wax Fam": 20.0, "Swordsman": 10.0, "Tag T-Shirt": 20.0, "Krypto Kumas": 20.0, 
+        "Magician": 10.0, "Ruffian": 10.0, "Smil Summer Ready": 20.0, "M.O.R.B.S.": 20.0, "Shnazzy'S E-Girls": 20.0, "Dygycon Hoodie": 20.0, "New Zerenia Bikini Vibes": 40.0, "Quack Quack": 40.0, 
+        "Beasts Of Oni": 20.0, "Kaney Hoodie": 20.0}}
+
+        atomic_endpoint=random.choice([
+            "https://wax-aa.eu.eosamsterdam.net/atomicassets/v1/assets",
+            "https://atomic.wax.tgg.gg/atomicassets/v1/assets",
+            "https://atomic.hivebp.io/atomicassets/v1/assets",
+            "https://wax-atomic.wizardsguild.one/atomicassets/v1/assets",
+            "https://aa-api-wax.eosauthority.com/atomicassets/v1/assets",
+        ])
+
+        def flip_me(e):
+            target=e.currentTarget
+            card_div = target.parent.parent.parent
+            cards = card_div.select('div.card')  
+            for card in cards:
+                if card.hidden:
+                    card.hidden = False
+                else:
+                    card.hidden = True
+                
+        def get_asset_html(asset):
+            asset_data = asset['data']
+            trait_list = []
+            if asset_data.get("body") == "Kitty":
+                if asset_data.get("nose") == "No Nose":
+                    asset_data['nose'] == "No Nose - Kitty"
+                if asset_data.get("hair") == "None":
+                    asset_data['hair'] == "None - Kitty"
+            total = 0
+            for trait in TRAITS:
+                points = trait_scores[trait][asset_data.get(trait)]
+                trait_list.append(
+                    f"<strong>{trait.title()}:</strong> {asset_data.get(trait,'None')} (+{points})"
+                )
+                total += points
+            total = round(total,2)
+            
+            card_traits = """<p class="align-self-center flex-fill px-3 pt-1"><small>"""+"<br>".join(trait_list)+"</small></p>"
+            return f"""
+                <div class="col mt-4">
+                    <div name="front" class="card rounded-top border">
+                        <div class="d-flex position-relative rounded-top">
+                            <img src="https://ipfs.sixpm.dev/ipfs/{asset_data['img']}" class="card-img-top rounded-top" alt={asset_data['name']}>
+                            <button name="flip_button" id={"flip_asset"+str(asset['asset_id'])} class="btn btn-secondary position-absolute top-0 start-100 translate-middle">🗘</button>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{asset_data['name']}</h5>
+                            <p class="card-text">Owner: {asset['owner']}</p>
+                            <p class="card-text">Score: {total}</p>
+                            <a href="https://wax.atomichub.io/explorer/asset/{asset['asset_id']}" class="btn btn-primary">AtomicHub</a>
+                        </div>
+                    </div>
+                    <div name="back" class="card rounded-top border" hidden=true>
+                        <div class="d-flex w-100 position-relative bg-black opacity-75 text-white rounded-top align-self-center">
+                            {card_traits}
+                            <button name="flip_button" id={"flip_asset"+str(asset['asset_id'])} class="btn btn-secondary position-absolute top-0 start-100 translate-middle">🗘</button>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{asset_data['name']}</h5>
+                            <p class="card-text">Owner: {asset['owner']}</p>
+                            <p class="card-text">Score: {total}</p>
+                            <a href="https://wax.atomichub.io/explorer/asset/{asset['asset_id']}" class="btn btn-primary">AtomicHub</a>
+                        </div>
+                    </div>
+                </div>"""
+
+        def read(req):
+            global page
+            data = req.json["data"]
+            document['btn_go'].disabled = False
+            document['test_spin'].hidden = True
+            
+            document['navtop'].hidden = True
+            document['navbot'].hidden = True
+            
+            if len(data) > 1:
+                
+                if len(data) == 20:
+                    document['navtop'].hidden = False
+                    document['navbot'].hidden = False
+                    next_btns = document.get(name="btn_next")
+                    for btn in next_btns:
+                        btn.disabled=False
+                else:
+                    
+                    next_btns = document.get(name="btn_next")
+                    for btn in next_btns:
+                        btn.disabled=True
+                if page == 1:
+                    
+                    prev_btns = document.get(name="btn_prev")
+                    for btn in prev_btns:
+                        btn.disabled=True
+                else:
+                    
+                    document['navtop'].hidden = False
+                    document['navbot'].hidden = False
+                    prev_btns = document.get(name="btn_prev")
+                    for btn in prev_btns:
+                        btn.disabled=False
+                document['data_area'].hidden = False
+                document['data_area'].children[0].html = "".join([get_asset_html(asset) for asset in data])
+                flips = document.get(name="flip_button") 
+                for flipper in flips:
+                    flipper.bind("click",lambda e: flip_me(e))
+                
+            else:
+                
+                document['data_area'].hidden = False
+                asset = data[0]
+                document['data_area'].children[0].html = get_asset_html(asset)
+                flips = document.get(name="flip_button") 
+                for flipper in flips:
+                    flipper.bind("click",lambda e: flip_me(e))
+
+        def change_color():
+            print(document['info_message'].class_name)
+            document['info_message'].class_name = document['info_message'].class_name.replace(" text-bg-warning","")
+
+        def show_message(msg):
+            document['info_message'].text = msg
+            document['info_message'].class_name += " text-bg-warning"
+            timer.set_timeout(change_color, 2000)
+
+
+        async def handle_go(e):
+            global page
+            global params
+            page = 1
+            params = {"collection_name":"worldsofsmil","schema_name":"heroes.pfp",
+                    "limit":20, "page": page, "sort": "asset_id","order":"asc"}
+            asset_id = document["input_asset_id"].value
+            hero_number = document["input_hero_id"].value
+            wax_address = document["input_wax_address"].value
+            document["input_asset_id"].value = ""
+            document["input_hero_id"].value = ""
+            document["input_wax_address"].value = ""
+            if len([i for i in [asset_id,hero_number,wax_address] if i]) > 1:
+                show_message("Use only one filter!")
+                return
+            elif len([i for i in [asset_id,hero_number,wax_address] if i]) == 0:
+                show_message("You need to enter a filter!")
+                return
+                
+            
+            target = ""
+            if asset_id:
+                params["ids"] = asset_id
+                target = "asset_id"
+            elif hero_number:
+                params["match"] = f"Hero of Midgard #{hero_number.zfill(5)}"
+                target = "hero_number"
+            elif wax_address:
+                params["owner"] = wax_address
+                target = wax_address
+            await make_request(e)
+
+        async def make_request(e):
+            global page
+            global params
+            
+            print(params)
+            document['test_spin'].hidden = False
+            document['btn_go'].disabled = True
+            document['data_area'].hidden = True
+            document['data_area'].hidden = True
+            req = ajax.get(atomic_endpoint,data=params,mode="json",oncomplete=read)
+
+
+        document['btn_go'].bind("click",lambda e: aio.run(handle_go(e)))
+        
+        async def change_page(e,direction):
+            global page
+            page += direction
+            params["page"] = page
+            await make_request(e)
+
+        prev_btns = document.get(name="btn_prev")
+        for btn in prev_btns:
+            btn.bind("click",lambda e: aio.run(change_page(e,-1)))
+
+        next_btns = document.get(name="btn_next")
+        for btn in next_btns:
+            btn.bind("click",lambda e: aio.run(change_page(e,1)))
+        
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
