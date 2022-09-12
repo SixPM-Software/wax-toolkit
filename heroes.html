@@ -316,7 +316,6 @@
                     flipper.bind("click",lambda e: flip_me(e))
 
         def change_color():
-            print(document['info_message'].class_name)
             document['info_message'].class_name = document['info_message'].class_name.replace(" text-bg-warning","")
 
         def show_message(msg):
@@ -360,8 +359,6 @@
         async def make_request(e):
             global page
             global params
-            
-            print(params)
             document['test_spin'].hidden = False
             document['btn_go'].disabled = True
             document['data_area'].hidden = True
