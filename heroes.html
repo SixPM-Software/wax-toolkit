@@ -224,9 +224,9 @@
             trait_list = []
             if asset_data.get("body") == "Kitty":
                 if asset_data.get("nose") == "No Nose":
-                    asset_data['nose'] == "No Nose - Kitty"
+                    asset_data['nose'] = "No Nose - Kitty"
                 if asset_data.get("hair") == "None":
-                    asset_data['hair'] == "None - Kitty"
+                    asset_data['hair'] = "None - Kitty"
             total = 0
             for trait in TRAITS:
                 points = trait_scores[trait][asset_data.get(trait)]
