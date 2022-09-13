@@ -8,7 +8,7 @@
     <meta property="og:site_name" content="Heroes of Midgard Checker">
     <meta property="og:title" content="Heroes of Midgard Checker">
     <meta property="og:description" content="Check the rarity of any hero here!">
-    
+
     <title>Heroes of Midgard Checker</title>
     <link rel="icon" href="img/hom.png" />
     <!-- CSS only -->
@@ -38,8 +38,8 @@
     <main class="h-100" style="background-color: rgba(0, 0, 0, 0.5); background-size: cover; display: table;">
         <div class="text-secondary px-4 py-5 text-center w-100" style="background-color: rgba(0, 0, 0, 0.6);">
             <div class="py-5">
-                <a href="./heroes"><img class="d-block mx-auto mb-4 rounded-circle" src="img/hom.png" alt=""
-                        width="96" height="96"></a>
+                <a href="./heroes"><img class="d-block mx-auto mb-4 rounded-circle" src="img/hom.png" alt="" width="96"
+                        height="96"></a>
                 <h1 class="display-5 fw-bold text-white">Heroes of Midgard</h1>
                 <div class="col-lg-6 mx-auto">
                     <p class="fs-5 mb-4 text-white">Hero Rarity Checker</p>
@@ -66,8 +66,14 @@
                         <input type="text" id="input_wax_address" class="form-control" placeholder="abc12.wam"
                             aria-label="WAX Address">
                     </div>
-                    <button class="btn btn-primary" type="button" id="btn_go"><span id="test_spin"
-                            class="spinner-border spinner-border-sm" role="status" hidden></span> Go!</button>
+                    <div class="container-md d-flex form-check form-switch px-2 justify-content-center"  data-bs-toggle="tooltip" title="Scales Hair Scores based on category">
+                        <input class="form-check-input mx-1" type="checkbox" id="hair_scores" checked>
+                        <label class="form-check-label" for="hair_scores">Use scaled scores (recommended) </label>
+                    </div>
+                        <div class="py-3">
+                        <button class="btn btn-primary" type="button" id="btn_go"><span id="test_spin"
+                                class="spinner-border spinner-border-sm" role="status" hidden></span> Go!</button>
+                        </div>
                 </div>
             </div>
             <div class="container px-2 py-6 mt-4 mb-4 w-100">
@@ -134,7 +140,7 @@
                 "background",
             ]
         
-        trait_scores = {"background": {"26": 80.0, "49": 83.33, "30": 80.0, "70": 117.65, "66": 117.65, "59": 117.65, "64": 117.65, "24": 80.0, "69": 117.65, "2": 80.0, "33": 80.0,
+        trait_scores_unscaled = {"background": {"26": 80.0, "49": 83.33, "30": 80.0, "70": 117.65, "66": 117.65, "59": 117.65, "64": 117.65, "24": 80.0, "69": 117.65, "2": 80.0, "33": 80.0,
         "19": 80.0, "40": 80.0, "36": 80.0, "87": 166.67, "61": 117.65, "55": 83.33, "67": 117.65, "15": 80.0, "1": 80.0, "37": 80.0, "54": 83.33, "65": 117.65, "31": 80.0, "28": 80.0,
         "94": 166.67, "71": 117.65, "96": 200.0, "18": 80.0, "25": 80.0, "39": 80.0, "56": 117.65, "81": 117.65, "4": 80.0, "35": 80.0, "86": 166.67, "6": 80.0, "78": 117.65, "16": 80.0,
         "82": 117.65, "84": 117.65, "47": 83.33, "17": 80.0, "27": 80.0, "41": 80.0, "48": 83.33, "51": 83.33, "29": 80.0, "91": 166.67, "11": 80.0, "34": 80.0, "13": 80.0, "20": 80.0, 
@@ -202,6 +208,62 @@
         "Magician": 10.0, "Ruffian": 10.0, "Smil Summer Ready": 20.0, "M.O.R.B.S.": 20.0, "Shnazzy'S E-Girls": 20.0, "Dygycon Hoodie": 20.0, "New Zerenia Bikini Vibes": 40.0, "Quack Quack": 40.0, 
         "Beasts Of Oni": 20.0, "Kaney Hoodie": 20.0}}
 
+        trait_scores_hair_scaled = {"background":{"1":80,"2":80,"3":80,"4":80,"5":80,"6":80,"7":80,"8":80,"9":80,"10":80,"11":80,"12":80,"13":80,"14":80,"15":80,"16":80,"17":80,"18":80,"19":80,"20":80,"21":80,
+        "22":80,"23":80,"24":80,"25":80,"26":80,"27":80,"28":80,"29":80,"30":80,"31":80,"32":80,"33":80,"34":80,"35":80,"36":80,"37":80,"38":80,"39":80,"40":80,"41":80,"42":80,"43":80,
+        "44":80,"45":80,"46":83.33,"47":83.33,"48":83.33,"49":83.33,"50":83.33,"51":83.33,"52":83.33,"53":83.33,"54":83.33,"55":83.33,"56":117.65,"57":117.65,"58":117.65,"59":117.65,
+        "60":117.65,"61":117.65,"62":117.65,"63":117.65,"64":117.65,"65":117.65,"66":117.65,"67":117.65,"68":117.65,"69":117.65,"70":117.65,"71":117.65,"72":117.65,"73":117.65,"74":117.65,
+        "75":117.65,"76":117.65,"77":117.65,"78":117.65,"79":117.65,"80":117.65,"81":117.65,"82":117.65,"83":117.65,"84":117.65,"85":166.67,"86":166.67,"87":166.67,"88":166.67,"89":166.67,
+        "90":166.67,"91":166.67,"92":166.67,"93":166.67,"94":166.67,"95":166.67,"96":200},"weapon":{"None":2,"Green Crystal Staff":10,"Sword of the Mountain":10,"Bow of Hope":10,
+        "Shadow Daggers":10,"Bath Brush":10},"body":{"Pale":5.71,"Tan":5.71,"Brown":5.71,"Ivory":5.71,"Pink":13.33,"Honey":5.71,"Kitty":20},"scar":{"None":1.11,"Scar":20,"2 for 1":21.05},
+        "mouth":{"Mouth 11":10,"Mouth 04":10,"Mouth 03":10,"Mouth 05":10,"Mouth 07":10,"Mouth 08":10,"Mouth 09":10,"Mouth 01":10,"Mouth 02":13.33,"Mouth 10":26.67,"Mouth 06":11.43},
+        "nose":{"Nose 08":10.58,"Nose 07":10.58,"Nose 03":10.58,"Nose 10":10.58,"Nose 01":10.58,"Nose 05":10.58,"Nose 09":10.58,"Nose 04":10.58,"Nose 02":10.58,"Nose 06":10.58,"No Nose - Kitty":20,"No Nose":200},
+        "eyes":{"Eyes 15 - Slate":76.92,"Eyes 16 - Bright Gold":133.33,"Eyes 13 - Brown":133.33,"Eyes 10 - Pink":100,"Eyes 2 - Olive":66.67,"Eyes 4 - Light Sea":66.67,"Eyes 17 - Aqua":80,"Eyes 2 - Blue":66.67,
+        "Eyes 8 - Apple":100,"Eyes 6 - Blue":100,"Eyes 3 - Blue":80,"Eyes 10 - Purple":100,"Eyes 8 - Pink":100,"Eyes 17 - Blue":80,"Eyes 3 - Yellow":80,"Eyes 14 - Black":133.33,"Eyes 15 - Apple":76.92,
+        "Eyes 11 - Gray":100,"Eyes 5 - Dark Green":80,"Eyes 3 - Red":80,"Eyes 17 - Gold":80,"Eyes 7 - Light Pink":100,"Eyes 18 - Bright Purple":133.33,"Eyes 4 - Purple":66.67,"Eyes 7 - Gold":100,
+        "Eyes 5 - Dark Blue":80,"Eyes 8 - Blue":100,"Eyes 6 - Aqua":100,"Eyes 9 - Green":100,"Eyes 1 - Pink":66.67,"Eyes 18 - Bright Pink":133.33,"Eyes 17 - Pink":80,"Eyes 2 - Purple":66.67,
+        "Eyes 15 - Olive":76.92,"Eyes 4 - Green":66.67,"Eyes 1 - Baby Blue":66.67,"Eyes 17 - Green Pink":80,"Eyes 4 - Yellow-Green":66.67,"Eyes 1 - Hardgreen":66.67,"Eyes 12 - Pink Cyan":133.33,
+        "Eyes 7 - Light Slate":100,"Eyes 16 - Bright Purple":133.33,"Eyes 3 - Baby Blue":80,"Eyes 10 - Green":100,"Eyes 1 - Blue":66.67,"Eyes 15 - Violet":76.92,"Eyes 3 - Green":80,"Eyes 1 - Red":66.67,
+        "Eyes 11 - Dark Red":100,"Eyes 18 - Gold Devil":133.33,"Eyes 4 - Blue":66.67,"Eyes 14 - Violet":133.33,"Eyes 6 - Violet":100,"Eyes 1 - Gold":66.67,"Eyes 12 - Green Violet":133.33,
+        "Eyes 12 - Red Blue":133.33,"Eyes 7 - Light Blue":100,"Eyes 11 - Dark Indigo":100,"Eyes 17 - Red":80,"Eyes 2 - Green":66.67,"Eyes 8 - Aqua":100,"Eyes 6 - Gold":100,"Eyes 2 - Slate":66.67,
+        "Eyes 4 - Red":66.67,"Eyes 15 - Brown":76.92,"Eyes 13 - Olive":133.33,"Eyes 7 - Light Green":100,"Eyes 5 - Dark Red":80,"Eyes 17 - Green":80,"Eyes 12 - Gold Purple":133.33,"Eyes 3 - Purple":80,
+        "Eyes 14 - Slate":133.33,"Eyes 9 - Purple":100,"Eyes 11 - Dark Green":100,"Eyes 9 - Blue":100,"Eyes 1 - Purple":66.67,"Eyes 16 - Bright Pink":133.33,"Eyes 9 - Pink":100,"Eyes 18 - Bright Green":133.33,
+        "Eyes 13 - Slate":133.33,"Eyes 9 - Aqua":100,"Eyes 8 - Gold":100,"Eyes 11 - Dark Blue":100,"Eyes 10 - Blue":100,"Eyes 5 - Black":80,"Eyes 12 - Blue Green":133.33,"Eyes 3 - Aqua":80,
+        "Eyes 14 - Brown":133.33,"Eyes 10 - Aqua":100,"Eyes 18 - Bright Blue":133.33},"hair":{"Afro Blue Highlight":50,"Afro Green Highlight":50,"Afro Pink Highlight":50,"Afro Red Highlight":50,
+        "Afro Yellow Highlight":50,"Aye Aye Captain":250,"Back Bun Blue":50,"Back Bun Brown":50,"Back Bun Green":50,"Back Bun Pink":50,"Back Bun Purple":50,"Bangs Aqua":50,"Bangs Blue":50,
+        "Bangs Brown":50,"Bangs Green":50,"Bangs Red":50,"Bed Head Blue":41.67,"Bed Head Brown":41.67,"Bed Head Green":41.67,"Bed Head Lime":41.67,"Bed Head Pink":41.67,"Bed Head Purple":41.67,
+        "Boat Hat Blue":50,"Boat Hat Brown":50,"Boat Hat Green":50,"Boat Hat Red":50,"Boat Hat Turquoise":50,"Bob Blue":62.5,"Bob Green":62.5,"Bob Purple":62.5,"Bob Red":62.5,"Bob Yellow":41.67,
+        "Bowl Cut Black":41.67,"Bowl Cut Blue":41.67,"Bowl Cut Brown":41.67,"Bowl Cut Green":41.67,"Bowl Cut Purple":41.67,"Caesar Green":50,"Caesar Marine":50,"Caesar Olive":50,"Caesar Red":50,
+        "Caesar Seagreen":50,"Cloud Blue":50,"Cloud Green":50,"Cloud Purple":50,"Cloud Red":50,"Cloud Yellow":50,"Faded Blue":57.14,"Faded Purple":57.14,"Faded Red":57.14,"Faded Turquoise":57.14,
+        "Faded Yellow":57.14,"Faux Hawk Aqua":50,"Faux Hawk Blond":50,"Faux Hawk Palegreen":50,"Faux Hawk Purple":50,"Faux Hawk Red":50,"Fun Joker Amber":50,"Fun Joker Baby Blue":50,"Fun Joker Green":50,
+        "Fun Joker Maroon":50,"Fun Joker Purple":50,"Gather Tight Blue":50,"Gather Tight Green":50,"Gather Tight Orange":50,"Gather Tight Purple":50,"Gather Tight Yellow":50,"Levi Style Blue":50,
+        "Levi Style Green":50,"Levi Style Purple":50,"Levi Style Red":50,"Levi Style Sage":50,"Lion Baby Blue":50,"Lion Blue":50,"Lion Green":50,"Lion Purple":50,"Lion Red":50,"Lockheart Baby Blue":50,
+        "Lockheart Champagne":50,"Lockheart Green":50,"Lockheart Pink":50,"Lockheart Purple":50,"Mohawk Blue":50,"Mohawk Green":50,"Mohawk Purple":50,"Mohawk Red":50,"Mohawk Yellow":50,"Old Samuri Blue":83.33,
+        "Old Samuri Red":83.33,"Old Samuri Yellow":83.33,"Oppa Blue":62.5,"Oppa Brown":62.5,"Oppa Green":62.5,"Oppa Red":62.5,"Pineapple Emerald":62.5,"Pineapple Purple":62.5,"Pineapple Red":62.5,"Pineapple Yellow":62.5,
+        "Otaku Blue":50,"Otaku Green":50,"Otaku Purple":50,"Otaku Red":50,"Otaku Yellow":50,"Rambutan Azure":50,"Rambutan Blue":50,"Rambutan Purple":50,"Rambutan Red":50,"Rambutan Yellow":50,"Salon Error Baby Blue":50,
+        "Salon Error Green":50,"Salon Error Pink":50,"Salon Error Purple":50,"Salon Error Yellow":50,"Shag Blonde":57.14,"Shag Blue":57.14,"Shag Green":57.14,"Shag Oldrose":57.14,"Shag Purple":57.14,
+        "Side Asymmertrical Blue":50,"Side Asymmertrical Green":50,"Side Asymmertrical Purple":50,"Side Asymmertrical Red":50,"Side Asymmertrical Yellow":50,"Side Fringe Up Aqua":50,"Side Fringe Up Blue":50,
+        "Side Fringe Up Pink":50,"Side Fringe Up Red":50,"Side Fringe Up Yellow":50,"Side Part Blonde":57.14,"Side Part Blue":57.14,"Side Part Green":57.14,"Side Part Purple":57.14,"Side Part Red":57.14,
+        "Sky High Blue Sage":50,"Sky High Brown Yellow":50,"Sky High Green Forest":50,"Sky High Pink Purple":50,"Sky High Red Indigo":50,"Slime Blue":50,"Slime Green":50,"Slime Pink":50,"Slime Purple":50,
+        "Slime Yellow":50,"Straight Blonde":50,"Straight Blue":50,"Straight Green":50,"Straight Purple":50,"Straight Red":50,"Thai School Girls Blue Clip":50,"Thai School Girls Green Clip":50,
+        "Thai School Girls Purple Clip":50,"Thai School Girls Red Clip":50,"Thai School Girls Yellow Clip":50,"Windy Blonde":57.14,"Windy Blue":57.14,"Windy Green":57.14,"Windy Purple":57.14,"Windy Red":57.14,
+        "Back Ponytail Blonde":71.43,"Back Ponytail Blue":71.43,"Back Ponytail Purple":71.43,"Back Ponytail Red":71.43,"Braid Side Blue":71.43,"Braid Side Green":71.43,"Braid Side Pink":71.43,"Braid Side Yellow":71.43,
+        "Comb Over Blonde":71.43,"Comb Over Lavender":71.43,"Comb Over Palegreen":71.43,"Comb Over Pink":71.43,"Curtain Bangs Blonde":71.43,"Curtain Bangs Green":71.43,"Curtain Bangs Pink":71.43,
+        "Curtain Bangs Purple":71.43,"Dreadlock Green Clip":95.24,"Dreadlock Red Clip":95.24,"Dreadlock Yellow Clip":95.24,"Flat Iron Palepink Silver":71.43,"Flat Iron Waves Bisque":71.43,
+        "Flat Iron Waves Silver":71.43,"Flat Iron Waves Slate":71.43,"Front Side Braid Pale Green":95.24,"Front Side Braid Sliver":95.24,"Front Side Braid Tan":95.24,"Grass Blonde":71.43,
+        "Grass Green":71.43,"Grass Purple":71.43,"Grass Red":71.43,"Lisa Pink Ponytail":95.24,"Lisa Red Ponytail":95.24,"Lisa Yellow Ponytail":95.24,"Long Asymmetrical Aqua":71.43,"Long Asymmetrical Lime":71.43,
+        "Long Asymmetrical Orange":71.43,"Long Asymmetrical Pink":71.43,"Long Highlight Green":71.43,"Long Highlight Purple":71.43,"Long Highlight Red":71.43,"Long Highlight Yellow":71.43,"Mullet Black":83.33,
+        "Mullet Ocher":83.33,"Mullet Plum":83.33,"Mullet Slate":83.33,"Open Right Aqua":66.67,"Open Right Green":66.67,"Open Right Pear":66.67,"Open Right Pink":66.67,"Open Right Purple":66.67,"Perm Aqua":83.33,
+        "Perm Blonde":83.33,"Perm Blue":83.33,"Perm Pink":83.33,"Pixie Cut Brown":66.67,"Pixie Cut Green":66.67,"Pixie Cut Purple":66.67,"Pixie Cut Steelblue":66.67,"Pixie Cut Umber":66.67,"Ponytail Baby Blue":83.33,
+        "Ponytail Green":83.33,"Ponytail Red":83.33,"Ponytail Yellow":83.33,"Short Perm Green":83.33,"Short Perm Orange":83.33,"Short Perm Purple":83.33,"Short Perm Yellow":83.33,"Short Spiked Blue":83.33,"Short Spiked Green":83.33,
+        "Short Spiked Red":83.33,"Short Spiked Yellow":83.33,"Square Baby Blue":83.33,"Square Green":83.33,"Square Pink":83.33,"Square Yellow":83.33,"Two Side Buns Mistyrose":83.33,"Two Side Buns Palegreen":83.33,
+        "Two Side Buns Tan":83.33,"Two Side Buns Whiteblue":83.33,"Upsweep Blonde":83.33,"Upsweep Blue":83.33,"Upsweep Green":83.33,"Upsweep Red":83.33,"Biker Blue":166.67,"Biker Red":166.67,"Biker Yellow":166.67,
+        "Korea Half Seashell":250,"Korea Half Violet Lavender":250,"Manga Style Lavender":125,"Manga Style Palegreen":125,"Manga Style Pear":125,"Manga Style Silver":125,"Middle Part Lavender":166.67,"Middle Part Palegreen":166.67,
+        "Middle Part Pinkypink":166.67,"Nami Baby Blue":166.67,"Nami Redorange":166.67,"Nami Violet":166.67,"Pirate Baby Blue":166.67,"Pirate Blonde":166.67,"Pirate Coral":166.67,"Sweet Heroine Chanpagne":222.22,
+        "Sweet Heroine Pear":222.22,"Sweet Heroine Whiteblue":222.22,"Kumas Ears":400,"Onifire":500,"Prince Crown Blue":333.33,"Prince Crown Pink":333.33,"Prince Crown Yellow":333.33,"Floyd Wizard Hat":2000,"None":100,
+        "None - Kitty":20},"pet":{"None":1.38,"Crystal Spirit Blue":20,"Crystal Spirit Orange":20,"Crystal Spirit Green":20,"Plobby Green":40,"Crystal Spirit Purple":20,"Plobby Pink":40,"Eye Bat":2000,"Plobby Blue":40},
+        "clothes":{"Archer":10,"Spa Robe":10,"Wax Fam":20,"Swordsman":10,"Tag T-Shirt":20,"Krypto Kumas":20,"Magician":10,"Ruffian":10,"Smil Summer Ready":20,"M.O.R.B.S.":20,"Shnazzy'S E-Girls":20,"Dygycon Hoodie":20,
+        "New Zerenia Bikini Vibes":40,"Quack Quack":40,"Beasts Of Oni":20,"Kaney Hoodie":20}}
+
         atomic_endpoint=random.choice([
             "https://wax-aa.eu.eosamsterdam.net/atomicassets/v1/assets",
             "https://atomic.wax.tgg.gg/atomicassets/v1/assets",
@@ -229,7 +291,11 @@
                     asset_data['hair'] = "None - Kitty"
             total = 0
             for trait in TRAITS:
-                points = trait_scores[trait][asset_data.get(trait)]
+                if document['hair_scores'].checked:
+                    scoring_system = trait_scores_hair_scaled
+                else:
+                    scoring_system = trait_scores_unscaled
+                points = scoring_system[trait][asset_data.get(trait)]
                 trait_list.append(
                     f"<strong>{trait.title()}:</strong> {asset_data.get(trait,'None')} (+{points})"
                 )
